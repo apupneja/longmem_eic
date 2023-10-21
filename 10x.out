@@ -1,0 +1,473 @@
+2023-10-12 04:54:20 | INFO | faiss.loader | Loading faiss with AVX2 support.
+2023-10-12 04:54:20 | INFO | faiss.loader | Successfully loaded faiss with AVX2 support.
+2023-10-12 04:54:24 | INFO | faiss.loader | Loading faiss with AVX2 support.
+2023-10-12 04:54:24 | INFO | faiss.loader | Successfully loaded faiss with AVX2 support.
+2023-10-12 04:54:24 | INFO | faiss.loader | Loading faiss with AVX2 support.
+2023-10-12 04:54:24 | INFO | faiss.loader | Successfully loaded faiss with AVX2 support.
+2023-10-12 04:54:24 | INFO | faiss.loader | Loading faiss with AVX2 support.
+2023-10-12 04:54:24 | INFO | faiss.loader | Loading faiss with AVX2 support.
+2023-10-12 04:54:24 | INFO | faiss.loader | Successfully loaded faiss with AVX2 support.
+2023-10-12 04:54:24 | INFO | faiss.loader | Successfully loaded faiss with AVX2 support.
+2023-10-12 04:54:25 | INFO | fairseq.distributed.utils | distributed init (rank 2): tcp://localhost:15678
+2023-10-12 04:54:25 | INFO | fairseq.distributed.utils | distributed init (rank 1): tcp://localhost:15678
+2023-10-12 04:54:25 | INFO | fairseq.distributed.utils | distributed init (rank 0): tcp://localhost:15678
+2023-10-12 04:54:25 | INFO | fairseq.distributed.utils | distributed init (rank 3): tcp://localhost:15678
+2023-10-12 04:54:26 | INFO | torch.distributed.distributed_c10d | Added key: store_based_barrier_key:1 to store for rank: 1
+2023-10-12 04:54:26 | INFO | torch.distributed.distributed_c10d | Added key: store_based_barrier_key:1 to store for rank: 0
+2023-10-12 04:54:26 | INFO | torch.distributed.distributed_c10d | Added key: store_based_barrier_key:1 to store for rank: 2
+2023-10-12 04:54:26 | INFO | torch.distributed.distributed_c10d | Added key: store_based_barrier_key:1 to store for rank: 3
+2023-10-12 04:54:26 | INFO | torch.distributed.distributed_c10d | Rank 2: Completed store-based barrier for key:store_based_barrier_key:1 with 4 nodes.
+2023-10-12 04:54:26 | INFO | torch.distributed.distributed_c10d | Rank 3: Completed store-based barrier for key:store_based_barrier_key:1 with 4 nodes.
+2023-10-12 04:54:26 | INFO | torch.distributed.distributed_c10d | Rank 0: Completed store-based barrier for key:store_based_barrier_key:1 with 4 nodes.
+2023-10-12 04:54:26 | INFO | fairseq.distributed.utils | initialized host eic-gt-gpu1 as rank 2
+2023-10-12 04:54:26 | INFO | fairseq.distributed.utils | initialized host eic-gt-gpu1 as rank 0
+2023-10-12 04:54:26 | INFO | fairseq.distributed.utils | initialized host eic-gt-gpu1 as rank 3
+2023-10-12 04:54:26 | INFO | torch.distributed.distributed_c10d | Rank 1: Completed store-based barrier for key:store_based_barrier_key:1 with 4 nodes.
+2023-10-12 04:54:26 | INFO | fairseq.distributed.utils | initialized host eic-gt-gpu1 as rank 1
+2023-10-12 04:54:28 | INFO | fairseq_cli.train | {'_name': None, 'common': {'_name': None, 'no_progress_bar': False, 'log_interval': 100, 'log_format': None, 'log_file': None, 'aim_repo': None, 'aim_run_hash': None, 'tensorboard_logdir': None, 'wandb_project': None, 'azureml_logging': False, 'seed': 42, 'cpu': False, 'tpu': False, 'bf16': False, 'memory_efficient_bf16': False, 'fp16': True, 'memory_efficient_fp16': False, 'fp16_no_flatten_grads': False, 'fp16_init_scale': 128, 'fp16_scale_window': None, 'fp16_scale_tolerance': 0.0, 'on_cpu_convert_precision': False, 'min_loss_scale': 0.0001, 'threshold_loss_scale': None, 'amp': False, 'amp_batch_retries': 2, 'amp_init_scale': 128, 'amp_scale_window': None, 'user_dir': None, 'empty_cache_freq': 0, 'all_gather_list_size': 16384, 'model_parallel_size': 1, 'quantization_config_path': None, 'profile': False, 'reset_logging': False, 'suppress_crashes': False, 'use_plasma_view': False, 'plasma_path': '/tmp/plasma'}, 'common_eval': {'_name': None, 'path': None, 'post_process': None, 'quiet': False, 'model_overrides': '{}', 'results_path': None}, 'distributed_training': {'_name': None, 'distributed_world_size': 4, 'distributed_num_procs': 4, 'distributed_rank': 0, 'distributed_backend': 'nccl', 'distributed_init_method': 'tcp://localhost:15678', 'distributed_port': -1, 'device_id': 0, 'distributed_no_spawn': False, 'ddp_backend': 'pytorch_ddp', 'ddp_comm_hook': 'none', 'bucket_cap_mb': 25, 'fix_batches_to_gpus': False, 'find_unused_parameters': False, 'gradient_as_bucket_view': False, 'fast_stat_sync': False, 'heartbeat_timeout': -1, 'broadcast_buffers': False, 'slowmo_momentum': None, 'slowmo_base_algorithm': 'localsgd', 'localsgd_frequency': 3, 'nprocs_per_node': 4, 'pipeline_model_parallel': False, 'pipeline_balance': None, 'pipeline_devices': None, 'pipeline_chunks': 0, 'pipeline_encoder_balance': None, 'pipeline_encoder_devices': None, 'pipeline_decoder_balance': None, 'pipeline_decoder_devices': None, 'pipeline_checkpoint': 'never', 'zero_sharding': 'none', 'fp16': True, 'memory_efficient_fp16': False, 'tpu': False, 'no_reshard_after_forward': False, 'fp32_reduce_scatter': False, 'cpu_offload': False, 'use_sharded_state': False, 'not_fsdp_flatten_parameters': False}, 'dataset': {'_name': None, 'num_workers': 1, 'skip_invalid_size_inputs_valid_test': False, 'max_tokens': None, 'batch_size': 1, 'required_batch_size_multiple': 8, 'required_seq_len_multiple': 1, 'dataset_impl': None, 'data_buffer_size': 10, 'train_subset': 'train', 'valid_subset': 'valid', 'combine_valid_subsets': None, 'ignore_unused_valid_subsets': False, 'validate_interval': 1, 'validate_interval_updates': 0, 'validate_after_updates': 0, 'fixed_validation_seed': None, 'disable_validation': True, 'max_tokens_valid': None, 'batch_size_valid': 1, 'max_valid_steps': None, 'curriculum': 0, 'gen_subset': 'test', 'num_shards': 1, 'shard_id': 0, 'grouped_shuffling': False, 'update_epoch_batch_itr': False, 'update_ordered_indices_seed': False}, 'optimization': {'_name': None, 'max_epoch': 0, 'max_update': 0, 'stop_time_hours': 0.0, 'clip_norm': 0.0, 'sentence_avg': False, 'update_freq': [8], 'lr': [0.0002], 'stop_min_lr': -1.0, 'use_bmuf': False, 'skip_remainder_batch': False}, 'checkpoint': {'_name': None, 'save_dir': '/data/zyu401_data/anirudh/longmem_data/train_ckpt/10x/', 'restore_file': 'checkpoint_last.pt', 'continue_once': None, 'finetune_from_model': None, 'reset_dataloader': False, 'reset_lr_scheduler': False, 'reset_meters': False, 'reset_optimizer': False, 'optimizer_overrides': '{}', 'save_interval': 1, 'save_interval_updates': 10000, 'keep_interval_updates': -1, 'keep_interval_updates_pattern': -1, 'keep_last_epochs': -1, 'keep_best_checkpoints': -1, 'no_save': False, 'no_epoch_checkpoints': False, 'no_last_checkpoints': False, 'no_save_optimizer_state': False, 'best_checkpoint_metric': 'loss', 'maximize_best_checkpoint_metric': False, 'patience': -1, 'checkpoint_suffix': '', 'checkpoint_shard_count': 1, 'load_checkpoint_on_all_dp_ranks': False, 'write_checkpoints_asynchronously': False, 'model_parallel_size': 1}, 'bmuf': {'_name': None, 'block_lr': 1.0, 'block_momentum': 0.875, 'global_sync_iter': 50, 'warmup_iterations': 500, 'use_nbm': False, 'average_sync': False, 'distributed_world_size': 4}, 'generation': {'_name': None, 'beam': 5, 'nbest': 1, 'max_len_a': 0.0, 'max_len_b': 200, 'min_len': 1, 'match_source_len': False, 'unnormalized': False, 'no_early_stop': False, 'no_beamable_mm': False, 'lenpen': 1.0, 'unkpen': 0.0, 'replace_unk': None, 'sacrebleu': False, 'score_reference': False, 'prefix_size': 0, 'no_repeat_ngram_size': 0, 'sampling': False, 'sampling_topk': -1, 'sampling_topp': -1.0, 'constraints': None, 'temperature': 1.0, 'diverse_beam_groups': -1, 'diverse_beam_strength': 0.5, 'diversity_rate': -1.0, 'print_alignment': None, 'print_step': False, 'lm_path': None, 'lm_weight': 0.0, 'iter_decode_eos_penalty': 0.0, 'iter_decode_max_iter': 10, 'iter_decode_force_max_iter': False, 'iter_decode_with_beam': 1, 'iter_decode_with_external_reranker': False, 'retain_iter_history': False, 'retain_dropout': False, 'retain_dropout_modules': None, 'decoding_format': None, 'no_seed_provided': False, 'eos_token': None}, 'eval_lm': {'_name': None, 'output_word_probs': False, 'output_word_stats': False, 'context_window': 0, 'softmax_batch': 9223372036854775807}, 'interactive': {'_name': None, 'buffer_size': 0, 'input': '-'}, 'model': {'_name': 'transformer_lm_sidenet_gpt2_small', 'activation_fn': gelu, 'dropout': 0.1, 'attention_dropout': 0.1, 'activation_dropout': 0.0, 'relu_dropout': 0.0, 'decoder_embed_dim': 1024, 'decoder_output_dim': 1024, 'decoder_input_dim': 1024, 'decoder_ffn_embed_dim': 4096, 'decoder_layers': 12, 'decoder_attention_heads': 16, 'decoder_normalize_before': True, 'no_decoder_final_norm': False, 'adaptive_softmax_cutoff': None, 'adaptive_softmax_dropout': 0.0, 'adaptive_softmax_factor': 4.0, 'no_token_positional_embeddings': True, 'share_decoder_input_output_embed': True, 'character_embeddings': False, 'character_filters': '[(1, 64), (2, 128), (3, 192), (4, 256), (5, 256), (6, 256), (7, 256)]', 'character_embedding_dim': 4, 'char_embedder_highway_layers': 2, 'adaptive_input': False, 'adaptive_input_factor': 4.0, 'adaptive_input_cutoff': None, 'tie_adaptive_weights': False, 'tie_adaptive_proj': False, 'decoder_learned_pos': False, 'layernorm_embedding': False, 'no_scale_embedding': False, 'checkpoint_activations': False, 'offload_activations': False, 'decoder_layerdrop': 0.0, 'decoder_layers_to_keep': None, 'quant_noise_pq': 0.0, 'quant_noise_pq_block_size': 8, 'quant_noise_scalar': 0.0, 'min_params_to_wrap': 100000000, 'base_layers': 0, 'base_sublayers': 1, 'base_shuffle': 0, 'scale_fc': False, 'scale_attn': False, 'scale_heads': False, 'scale_resids': False, 'decoder_xformers_att_config': None, 'reduction_factor': 8, 'layer_reduction_factor': 2, 'reload_ptm_layer': True, 'tune_lm_head': False, 'gpt_encoder_path': 'gpt2_bpe', 'use_external_memory': True, 'retrieval_layer_index': 17, 'chunk_size': 4, 'dstore_fp16': False, 'use_gpu_to_search': True, 'move_dstore_to_mem': False, 'dstore_size': 10000000, 'k': 64, 'probe': 32, 'dstore_filename': 'data/datastore', 'long_context_attention': False, 'memory_size': 655360, 'precompute_mem_layer': 0, 'pretrained_model_path': '/data/zyu401_data/anirudh/longmem_data/LongMem_public_checkpoints/gpt2_medium/checkpoint_last.pt', 'add_bos_token': False, 'tokens_per_sample': 1024, 'max_target_positions': None, 'tpu': False}, 'task': {'_name': 'language_modeling', 'data': '/data/zyu401_data/anirudh/longmem_data/data-bin/longmem', 'sample_break_mode': none, 'tokens_per_sample': 1024, 'output_dictionary_size': -1, 'self_target': False, 'future_target': False, 'past_target': False, 'add_bos_token': False, 'max_target_positions': None, 'shorten_method': none, 'shorten_data_split_list': '', 'pad_to_fixed_length': False, 'pad_to_fixed_bsz': False, 'data_iteration': False, 'data_no_shuffle': True, 'seed': 42, 'batch_size': 1, 'batch_size_valid': 1, 'dataset_impl': None, 'data_buffer_size': 10, 'tpu': False, 'use_plasma_view': False, 'plasma_path': '/tmp/plasma'}, 'criterion': {'_name': 'cross_entropy', 'sentence_avg': False}, 'optimizer': {'_name': 'adam', 'adam_betas': '(0.9, 0.98)', 'adam_eps': 1e-06, 'weight_decay': 0.01, 'use_old_adam': False, 'fp16_adam_stats': False, 'tpu': False, 'lr': [0.0002]}, 'lr_scheduler': {'_name': 'polynomial_decay', 'warmup_updates': 0, 'force_anneal': None, 'end_learning_rate': 0.0, 'power': 1.0, 'total_num_update': 100000.0, 'lr': [0.0002]}, 'scoring': {'_name': 'bleu', 'pad': 1, 'eos': 2, 'unk': 3}, 'bpe': None, 'tokenizer': None, 'ema': {'_name': None, 'store_ema': False, 'ema_decay': 0.9999, 'ema_start_update': 0, 'ema_seed_model': None, 'ema_update_freq': 1, 'ema_fp32': False}}
+2023-10-12 04:54:28 | INFO | fairseq.tasks.language_modeling | dictionary: 51200 types
+Load Pre-trained GPT from /data/zyu401_data/anirudh/longmem_data/LongMem_public_checkpoints/gpt2_medium/checkpoint_last.pt
+2023-10-12 04:54:32 | INFO | fairseq.tasks.gpt | dictionary: 51200 types
+NewGPT retrieval Layer Index 17
+Reload from pretrained model layer
+set up external memory
+chunk size 4
+put index from cpu to gpu 0
+put done
+2023-10-12 04:54:40 | INFO | fairseq_cli.train | TransformerLanguageModelSideNet(
+  (decoder): TransformerDecoderSideNet(
+    (dropout_module): FairseqDropout()
+    (embed_tokens): Embedding(51200, 1024, padding_idx=1)
+    (layers): ModuleList(
+      (0-7): 8 x TransformerDecoderSideNetLayer(
+        (dropout_module): FairseqDropout()
+        (self_attn): MultiheadAttention(
+          (dropout_module): FairseqDropout()
+          (k_proj): Linear(in_features=1024, out_features=1024, bias=False)
+          (v_proj): Linear(in_features=1024, out_features=1024, bias=False)
+          (q_proj): Linear(in_features=1024, out_features=1024, bias=False)
+          (out_proj): Linear(in_features=1024, out_features=1024, bias=False)
+        )
+        (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+        (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+        (ln_1): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+      )
+      (8): TransformerDecoderSideNetLayer(
+        (dropout_module): FairseqDropout()
+        (self_attn): JointMultiheadAttentionWeightedSum(
+          (dropout_module): FairseqDropout()
+          (k_proj): Linear(in_features=1024, out_features=1024, bias=False)
+          (v_proj): Linear(in_features=1024, out_features=1024, bias=False)
+          (q_proj): Linear(in_features=1024, out_features=1024, bias=False)
+          (out_proj): Linear(in_features=1024, out_features=1024, bias=False)
+        )
+        (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+        (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+        (ln_1): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+      )
+      (9-11): 3 x TransformerDecoderSideNetLayer(
+        (dropout_module): FairseqDropout()
+        (self_attn): MultiheadAttention(
+          (dropout_module): FairseqDropout()
+          (k_proj): Linear(in_features=1024, out_features=1024, bias=False)
+          (v_proj): Linear(in_features=1024, out_features=1024, bias=False)
+          (q_proj): Linear(in_features=1024, out_features=1024, bias=False)
+          (out_proj): Linear(in_features=1024, out_features=1024, bias=False)
+        )
+        (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+        (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+        (ln_1): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+    (layer_norm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+    (pretrained_model): NewGPTLanguageModel(
+      (decoder): NewGPTDecoder(
+        (model): NewGPTForCausalLM(
+          (transformer): NewGPTModel(
+            (wte): Embedding(51200, 1024)
+            (drop): Dropout(p=0.1, inplace=False)
+            (h): ModuleList(
+              (0-23): 24 x NewGPTBlock(
+                (ln_1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+                (attn): NewGPTAttention(
+                  (resid_dropout): Dropout(p=0.1, inplace=False)
+                  (q_proj): Linear(in_features=1024, out_features=1024, bias=False)
+                  (k_proj): Linear(in_features=1024, out_features=1024, bias=False)
+                  (v_proj): Linear(in_features=1024, out_features=1024, bias=False)
+                  (out_proj): Linear(in_features=1024, out_features=1024, bias=False)
+                )
+                (mlp): NewGPTMLP(
+                  (fc_in): Linear(in_features=1024, out_features=4096, bias=True)
+                  (fc_out): Linear(in_features=4096, out_features=1024, bias=True)
+                  (act): NewGELUActivation()
+                  (dropout): Dropout(p=0.1, inplace=False)
+                )
+              )
+            )
+            (ln_f): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+          )
+          (lm_head): Linear(in_features=1024, out_features=51200, bias=True)
+        )
+      )
+    )
+    (output_projection): Linear(in_features=1024, out_features=51200, bias=False)
+  )
+)
+2023-10-12 04:54:40 | INFO | fairseq_cli.train | task: LanguageModelingTask
+2023-10-12 04:54:40 | INFO | fairseq_cli.train | model: TransformerLanguageModelSideNet
+2023-10-12 04:54:40 | INFO | fairseq_cli.train | criterion: CrossEntropyCriterion
+2023-10-12 04:54:40 | INFO | fairseq_cli.train | num. shared model params: 558,155,792 (num. trained: 151,083,024)
+2023-10-12 04:54:40 | INFO | fairseq_cli.train | num. expert model params: 0 (num. trained: 0)
+2023-10-12 04:54:43 | INFO | torch.distributed.distributed_c10d | Added key: store_based_barrier_key:2 to store for rank: 0
+2023-10-12 04:54:43 | INFO | torch.distributed.distributed_c10d | Rank 0: Completed store-based barrier for key:store_based_barrier_key:2 with 4 nodes.
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.embed_tokens.weight <- decoder.pretrained_model.decoder.model.transformer.wte.weight
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.0.self_attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.0.self_attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.0.self_attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.1.self_attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.1.self_attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.1.self_attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.1.self_attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.2.self_attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.2.self_attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.2.self_attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.2.self_attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.3.self_attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.3.self_attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.3.self_attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.3.self_attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.4.self_attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.4.self_attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.4.self_attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.4.self_attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.5.self_attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.5.self_attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.5.self_attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.5.self_attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.6.self_attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.6.self_attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.6.self_attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.6.self_attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.7.self_attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.7.self_attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.7.self_attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.7.self_attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.8.self_attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.8.self_attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.8.self_attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.8.self_attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.9.self_attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.9.self_attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.9.self_attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.9.self_attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.10.self_attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.10.self_attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.10.self_attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.10.self_attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.11.self_attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.11.self_attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.11.self_attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.layers.11.self_attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.0.attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.0.attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.0.attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.0.attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.1.attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.1.attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.1.attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.1.attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.2.attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.2.attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.2.attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.2.attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.3.attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.3.attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.3.attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.3.attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.4.attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.4.attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.4.attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.4.attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.5.attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.5.attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.5.attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.5.attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.6.attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.6.attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.6.attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.6.attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.7.attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.7.attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.7.attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.7.attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.8.attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.8.attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.8.attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.8.attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.9.attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.9.attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.9.attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.9.attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.10.attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.10.attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.10.attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.10.attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.11.attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.11.attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.11.attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.11.attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.12.attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.12.attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.12.attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.12.attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.13.attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.13.attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.13.attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.13.attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.14.attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.14.attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.14.attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.14.attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.15.attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.15.attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.15.attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.15.attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.16.attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.16.attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.16.attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.16.attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.17.attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.17.attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.17.attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.17.attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.18.attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.18.attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.18.attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.18.attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.19.attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.19.attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.19.attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.19.attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.20.attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.20.attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.20.attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.20.attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.21.attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.21.attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.21.attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.21.attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.22.attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.22.attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.22.attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.22.attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.23.attn.q_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.23.attn.k_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.23.attn.v_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.pretrained_model.decoder.model.transformer.h.23.attn.out_proj.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.layers.0.self_attn.k_proj.bias <- decoder.output_projection.bias
+2023-10-12 04:54:43 | INFO | fairseq.trainer | detected shared parameter: decoder.pretrained_model.decoder.model.lm_head.weight <- decoder.output_projection.weight
+2023-10-12 04:54:43 | INFO | fairseq.utils | ***********************CUDA enviroments for all 4 workers***********************
+2023-10-12 04:54:43 | INFO | fairseq.utils | rank   0: capabilities =  8.6  ; total memory = 22.188 GB ; name = NVIDIA RTX A5000                        
+2023-10-12 04:54:43 | INFO | fairseq.utils | rank   1: capabilities =  8.6  ; total memory = 22.188 GB ; name = NVIDIA RTX A5000                        
+2023-10-12 04:54:43 | INFO | fairseq.utils | rank   2: capabilities =  8.6  ; total memory = 22.188 GB ; name = NVIDIA RTX A5000                        
+2023-10-12 04:54:43 | INFO | fairseq.utils | rank   3: capabilities =  8.6  ; total memory = 22.188 GB ; name = NVIDIA RTX A5000                        
+2023-10-12 04:54:43 | INFO | fairseq.utils | ***********************CUDA enviroments for all 4 workers***********************
+2023-10-12 04:54:43 | INFO | fairseq_cli.train | training on 4 devices (GPUs/TPUs)
+2023-10-12 04:54:43 | INFO | fairseq_cli.train | max tokens per device = None and max sentences per device = 1
+2023-10-12 04:54:43 | INFO | fairseq.trainer | Preparing to load checkpoint /data/zyu401_data/anirudh/longmem_data/train_ckpt/10x/checkpoint_last.pt
+2023-10-12 04:54:43 | INFO | fairseq.trainer | No existing checkpoint found /data/zyu401_data/anirudh/longmem_data/train_ckpt/10x/checkpoint_last.pt
+2023-10-12 04:54:43 | INFO | fairseq.trainer | loading train data for epoch 1
+2023-10-12 04:55:11 | INFO | fairseq.data.data_utils | loaded 1,681,792,185 examples from: /data/zyu401_data/anirudh/longmem_data/data-bin/longmem/train
+Load Pre-trained GPT from /data/zyu401_data/anirudh/longmem_data/LongMem_public_checkpoints/gpt2_medium/checkpoint_last.pt
+NewGPT retrieval Layer Index 17
+Reload from pretrained model layer
+set up external memory
+chunk size 4
+put index from cpu to gpu 3
+put done
+[43935426]
+[43935427]
+Load Pre-trained GPT from /data/zyu401_data/anirudh/longmem_data/LongMem_public_checkpoints/gpt2_medium/checkpoint_last.pt
+NewGPT retrieval Layer Index 17
+Reload from pretrained model layer
+set up external memory
+chunk size 4
+put index from cpu to gpu 2
+put done
+[29290284]
+[29290285]
+[0]
+[1]
+2023-10-12 04:59:04 | INFO | fairseq.data.iterators | grouped total_num_itrs = 1830643
+2023-10-12 04:59:04 | INFO | fairseq.trainer | begin training epoch 1
+2023-10-12 04:59:04 | INFO | fairseq_cli.train | Start iterating over samples
+2023-10-12 04:59:05 | INFO | faiss.loader | Loading faiss with AVX2 support.
+2023-10-12 04:59:05 | INFO | faiss.loader | Successfully loaded faiss with AVX2 support.
+Load Pre-trained GPT from /data/zyu401_data/anirudh/longmem_data/LongMem_public_checkpoints/gpt2_medium/checkpoint_last.pt
+NewGPT retrieval Layer Index 17
+Reload from pretrained model layer
+set up external memory
+chunk size 4
+put index from cpu to gpu 1
+put done
+[14645142]
+[14645143]
+2023-10-12 04:59:06 | INFO | faiss.loader | Loading faiss with AVX2 support.
+2023-10-12 04:59:06 | INFO | faiss.loader | Successfully loaded faiss with AVX2 support.
+2023-10-12 04:59:09 | INFO | faiss.loader | Loading faiss with AVX2 support.
+2023-10-12 04:59:09 | INFO | faiss.loader | Successfully loaded faiss with AVX2 support.
+2023-10-12 04:59:10 | INFO | faiss.loader | Loading faiss with AVX2 support.
+2023-10-12 04:59:10 | INFO | faiss.loader | Successfully loaded faiss with AVX2 support.
+[W reducer.cpp:1300] Warning: find_unused_parameters=True was specified in DDP constructor, but did not find any unused parameters in the forward pass. This flag results in an extra traversal of the autograd graph every iteration,  which can adversely affect performance. If your model indeed never has any unused parameters in the forward pass, consider turning this flag off. Note that this warning may be a false positive if your model has flow control causing later iterations to have unused parameters. (function operator())
+[W reducer.cpp:1300] Warning: find_unused_parameters=True was specified in DDP constructor, but did not find any unused parameters in the forward pass. This flag results in an extra traversal of the autograd graph every iteration,  which can adversely affect performance. If your model indeed never has any unused parameters in the forward pass, consider turning this flag off. Note that this warning may be a false positive if your model has flow control causing later iterations to have unused parameters. (function operator())
+[W reducer.cpp:1300] Warning: find_unused_parameters=True was specified in DDP constructor, but did not find any unused parameters in the forward pass. This flag results in an extra traversal of the autograd graph every iteration,  which can adversely affect performance. If your model indeed never has any unused parameters in the forward pass, consider turning this flag off. Note that this warning may be a false positive if your model has flow control causing later iterations to have unused parameters. (function operator())
+[W reducer.cpp:1300] Warning: find_unused_parameters=True was specified in DDP constructor, but did not find any unused parameters in the forward pass. This flag results in an extra traversal of the autograd graph every iteration,  which can adversely affect performance. If your model indeed never has any unused parameters in the forward pass, consider turning this flag off. Note that this warning may be a false positive if your model has flow control causing later iterations to have unused parameters. (function operator())
+2023-10-12 05:00:35 | INFO | fairseq.trainer | NOTE: gradient overflow detected, ignoring gradient, setting loss scale to: 64.0
+2023-10-12 05:00:37 | INFO | fairseq.trainer | NOTE: gradient overflow detected, ignoring gradient, setting loss scale to: 32.0
+2023-10-12 05:00:38 | INFO | fairseq.trainer | NOTE: gradient overflow detected, ignoring gradient, setting loss scale to: 16.0
+2023-10-12 05:00:40 | INFO | fairseq.trainer | NOTE: gradient overflow detected, ignoring gradient, setting loss scale to: 8.0
+2023-10-12 05:00:42 | INFO | fairseq.trainer | NOTE: gradient overflow detected, ignoring gradient, setting loss scale to: 4.0
+2023-10-12 05:00:44 | INFO | fairseq.trainer | NOTE: gradient overflow detected, ignoring gradient, setting loss scale to: 2.0
+2023-10-12 05:03:50 | INFO | train_inner | epoch 001:    106 / 1830643 loss=4.202, ppl=18.41, wps=17569.2, ups=0.54, wpb=32768, bsz=32, num_updates=100, lr=0.0001998, gnorm=0.521, loss_scale=2, train_wall=196, gb_free=12.9, wall=547
+2023-10-12 05:08:42 | INFO | train_inner | epoch 001:    206 / 1830643 loss=3.989, ppl=15.88, wps=11214.5, ups=0.34, wpb=32768, bsz=32, num_updates=200, lr=0.0001996, gnorm=0.273, loss_scale=2, train_wall=292, gb_free=12.9, wall=839
+2023-10-12 05:13:30 | INFO | train_inner | epoch 001:    306 / 1830643 loss=3.907, ppl=15.01, wps=11396.1, ups=0.35, wpb=32768, bsz=32, num_updates=300, lr=0.0001994, gnorm=0.302, loss_scale=2, train_wall=287, gb_free=12.9, wall=1127
+2023-10-12 05:18:19 | INFO | train_inner | epoch 001:    406 / 1830643 loss=4.027, ppl=16.3, wps=11335.2, ups=0.35, wpb=32768, bsz=32, num_updates=400, lr=0.0001992, gnorm=0.29, loss_scale=2, train_wall=289, gb_free=12.9, wall=1416
+2023-10-12 05:23:08 | INFO | train_inner | epoch 001:    506 / 1830643 loss=3.691, ppl=12.92, wps=11322.4, ups=0.35, wpb=32768, bsz=32, num_updates=500, lr=0.000199, gnorm=0.278, loss_scale=2, train_wall=289, gb_free=12.9, wall=1705
+2023-10-12 05:27:56 | INFO | train_inner | epoch 001:    606 / 1830643 loss=3.705, ppl=13.04, wps=11405.9, ups=0.35, wpb=32768, bsz=32, num_updates=600, lr=0.0001988, gnorm=0.284, loss_scale=4, train_wall=287, gb_free=12.9, wall=1992
+2023-10-12 05:32:45 | INFO | train_inner | epoch 001:    706 / 1830643 loss=3.688, ppl=12.89, wps=11304.9, ups=0.34, wpb=32768, bsz=32, num_updates=700, lr=0.0001986, gnorm=0.315, loss_scale=4, train_wall=289, gb_free=12.9, wall=2282
+2023-10-12 05:37:35 | INFO | train_inner | epoch 001:    806 / 1830643 loss=3.646, ppl=12.52, wps=11307.7, ups=0.35, wpb=32768, bsz=32, num_updates=800, lr=0.0001984, gnorm=0.256, loss_scale=4, train_wall=289, gb_free=12.9, wall=2572
+2023-10-12 05:42:26 | INFO | train_inner | epoch 001:    906 / 1830643 loss=3.731, ppl=13.28, wps=11250.6, ups=0.34, wpb=32768, bsz=32, num_updates=900, lr=0.0001982, gnorm=0.264, loss_scale=4, train_wall=291, gb_free=12.9, wall=2863
+2023-10-12 05:47:11 | INFO | train_inner | epoch 001:   1006 / 1830643 loss=3.725, ppl=13.22, wps=11497.9, ups=0.35, wpb=32768, bsz=32, num_updates=1000, lr=0.000198, gnorm=0.269, loss_scale=4, train_wall=285, gb_free=12.9, wall=3148
+2023-10-12 05:51:56 | INFO | train_inner | epoch 001:   1106 / 1830643 loss=3.586, ppl=12.01, wps=11525.5, ups=0.35, wpb=32768, bsz=32, num_updates=1100, lr=0.0001978, gnorm=0.289, loss_scale=8, train_wall=284, gb_free=12.9, wall=3433
+2023-10-12 05:56:40 | INFO | train_inner | epoch 001:   1206 / 1830643 loss=3.755, ppl=13.5, wps=11521.6, ups=0.35, wpb=32768, bsz=32, num_updates=1200, lr=0.0001976, gnorm=0.236, loss_scale=8, train_wall=284, gb_free=12.9, wall=3717
+2023-10-12 06:00:57 | INFO | fairseq.trainer | NOTE: gradient overflow detected, ignoring gradient, setting loss scale to: 4.0
+2023-10-12 06:01:33 | INFO | train_inner | epoch 001:   1307 / 1830643 loss=3.8, ppl=13.92, wps=11201.2, ups=0.34, wpb=32768, bsz=32, num_updates=1300, lr=0.0001974, gnorm=0.277, loss_scale=4, train_wall=292, gb_free=12.9, wall=4009
+2023-10-12 06:06:24 | INFO | train_inner | epoch 001:   1407 / 1830643 loss=3.847, ppl=14.39, wps=11251.3, ups=0.34, wpb=32768, bsz=32, num_updates=1400, lr=0.0001972, gnorm=0.242, loss_scale=4, train_wall=291, gb_free=12.9, wall=4301
+2023-10-12 06:11:14 | INFO | train_inner | epoch 001:   1507 / 1830643 loss=3.422, ppl=10.72, wps=11310.3, ups=0.35, wpb=32768, bsz=32, num_updates=1500, lr=0.000197, gnorm=0.202, loss_scale=4, train_wall=289, gb_free=12.9, wall=4590
+2023-10-12 06:16:01 | INFO | train_inner | epoch 001:   1607 / 1830643 loss=3.832, ppl=14.24, wps=11403.2, ups=0.35, wpb=32768, bsz=32, num_updates=1600, lr=0.0001968, gnorm=0.274, loss_scale=4, train_wall=287, gb_free=12.9, wall=4878
+2023-10-12 06:20:50 | INFO | train_inner | epoch 001:   1707 / 1830643 loss=3.624, ppl=12.33, wps=11336.4, ups=0.35, wpb=32768, bsz=32, num_updates=1700, lr=0.0001966, gnorm=0.285, loss_scale=4, train_wall=289, gb_free=12.9, wall=5167
+2023-10-12 06:22:45 | INFO | fairseq.trainer | NOTE: gradient overflow detected, ignoring gradient, setting loss scale to: 2.0
+2023-10-12 06:25:41 | INFO | train_inner | epoch 001:   1808 / 1830643 loss=3.819, ppl=14.12, wps=11268.7, ups=0.34, wpb=32768, bsz=32, num_updates=1800, lr=0.0001964, gnorm=0.23, loss_scale=2, train_wall=290, gb_free=12.9, wall=5458
+2023-10-12 06:30:27 | INFO | train_inner | epoch 001:   1908 / 1830643 loss=3.681, ppl=12.82, wps=11444.7, ups=0.35, wpb=32768, bsz=32, num_updates=1900, lr=0.0001962, gnorm=0.23, loss_scale=2, train_wall=286, gb_free=12.9, wall=5744
+2023-10-12 06:35:14 | INFO | train_inner | epoch 001:   2008 / 1830643 loss=3.331, ppl=10.06, wps=11418.2, ups=0.35, wpb=32768, bsz=32, num_updates=2000, lr=0.000196, gnorm=0.244, loss_scale=2, train_wall=287, gb_free=12.9, wall=6031
+2023-10-12 06:40:00 | INFO | train_inner | epoch 001:   2108 / 1830643 loss=3.679, ppl=12.81, wps=11463.1, ups=0.35, wpb=32768, bsz=32, num_updates=2100, lr=0.0001958, gnorm=0.229, loss_scale=2, train_wall=285, gb_free=12.9, wall=6317
+2023-10-12 06:44:48 | INFO | train_inner | epoch 001:   2208 / 1830643 loss=3.651, ppl=12.56, wps=11391.1, ups=0.35, wpb=32768, bsz=32, num_updates=2200, lr=0.0001956, gnorm=0.23, loss_scale=2, train_wall=287, gb_free=12.9, wall=6604
+2023-10-12 06:49:34 | INFO | train_inner | epoch 001:   2308 / 1830643 loss=3.569, ppl=11.87, wps=11428.8, ups=0.35, wpb=32768, bsz=32, num_updates=2300, lr=0.0001954, gnorm=0.261, loss_scale=4, train_wall=286, gb_free=12.9, wall=6891
+2023-10-12 06:54:25 | INFO | train_inner | epoch 001:   2408 / 1830643 loss=3.729, ppl=13.26, wps=11283.7, ups=0.34, wpb=32768, bsz=32, num_updates=2400, lr=0.0001952, gnorm=0.226, loss_scale=4, train_wall=290, gb_free=12.9, wall=7182
+2023-10-12 06:59:11 | INFO | train_inner | epoch 001:   2508 / 1830643 loss=3.606, ppl=12.18, wps=11428.8, ups=0.35, wpb=32768, bsz=32, num_updates=2500, lr=0.000195, gnorm=0.22, loss_scale=4, train_wall=286, gb_free=12.9, wall=7468
+2023-10-12 07:03:59 | INFO | train_inner | epoch 001:   2608 / 1830643 loss=3.631, ppl=12.39, wps=11410.5, ups=0.35, wpb=32768, bsz=32, num_updates=2600, lr=0.0001948, gnorm=0.213, loss_scale=4, train_wall=287, gb_free=12.9, wall=7755
+2023-10-12 07:08:45 | INFO | train_inner | epoch 001:   2708 / 1830643 loss=3.724, ppl=13.21, wps=11453.8, ups=0.35, wpb=32768, bsz=32, num_updates=2700, lr=0.0001946, gnorm=0.242, loss_scale=4, train_wall=286, gb_free=12.9, wall=8042
+2023-10-12 07:13:33 | INFO | train_inner | epoch 001:   2808 / 1830643 loss=3.672, ppl=12.74, wps=11375.7, ups=0.35, wpb=32768, bsz=32, num_updates=2800, lr=0.0001944, gnorm=0.219, loss_scale=8, train_wall=288, gb_free=12.9, wall=8330
+2023-10-12 07:18:19 | INFO | train_inner | epoch 001:   2908 / 1830643 loss=3.582, ppl=11.97, wps=11441.3, ups=0.35, wpb=32768, bsz=32, num_updates=2900, lr=0.0001942, gnorm=0.241, loss_scale=8, train_wall=286, gb_free=12.9, wall=8616
+2023-10-12 07:22:59 | INFO | fairseq.trainer | NOTE: gradient overflow detected, ignoring gradient, setting loss scale to: 4.0
+2023-10-12 07:23:10 | INFO | train_inner | epoch 001:   3009 / 1830643 loss=3.668, ppl=12.71, wps=11267, ups=0.34, wpb=32768, bsz=32, num_updates=3000, lr=0.000194, gnorm=0.243, loss_scale=4, train_wall=290, gb_free=12.9, wall=8907
+2023-10-12 07:27:56 | INFO | train_inner | epoch 001:   3109 / 1830643 loss=3.616, ppl=12.26, wps=11457.2, ups=0.35, wpb=32768, bsz=32, num_updates=3100, lr=0.0001938, gnorm=0.201, loss_scale=4, train_wall=286, gb_free=12.9, wall=9193
+2023-10-12 07:32:43 | INFO | train_inner | epoch 001:   3209 / 1830643 loss=3.644, ppl=12.5, wps=11425.2, ups=0.35, wpb=32768, bsz=32, num_updates=3200, lr=0.0001936, gnorm=0.218, loss_scale=4, train_wall=286, gb_free=12.9, wall=9480
+2023-10-12 07:37:29 | INFO | train_inner | epoch 001:   3309 / 1830643 loss=3.549, ppl=11.7, wps=11471.1, ups=0.35, wpb=32768, bsz=32, num_updates=3300, lr=0.0001934, gnorm=0.228, loss_scale=4, train_wall=285, gb_free=12.9, wall=9765
+2023-10-12 07:42:14 | INFO | train_inner | epoch 001:   3409 / 1830643 loss=3.68, ppl=12.82, wps=11488, ups=0.35, wpb=32768, bsz=32, num_updates=3400, lr=0.0001932, gnorm=0.215, loss_scale=4, train_wall=285, gb_free=12.9, wall=10051
+2023-10-12 07:47:02 | INFO | train_inner | epoch 001:   3509 / 1830643 loss=3.627, ppl=12.36, wps=11380, ups=0.35, wpb=32768, bsz=32, num_updates=3500, lr=0.000193, gnorm=0.207, loss_scale=4, train_wall=288, gb_free=12.9, wall=10338
+2023-10-12 07:51:47 | INFO | train_inner | epoch 001:   3609 / 1830643 loss=3.486, ppl=11.2, wps=11472.1, ups=0.35, wpb=32768, bsz=32, num_updates=3600, lr=0.0001928, gnorm=0.2, loss_scale=8, train_wall=285, gb_free=12.9, wall=10624
+2023-10-12 07:56:32 | INFO | train_inner | epoch 001:   3709 / 1830643 loss=3.528, ppl=11.53, wps=11496, ups=0.35, wpb=32768, bsz=32, num_updates=3700, lr=0.0001926, gnorm=0.204, loss_scale=8, train_wall=285, gb_free=12.9, wall=10909
+2023-10-12 08:01:18 | INFO | train_inner | epoch 001:   3809 / 1830643 loss=3.751, ppl=13.46, wps=11461, ups=0.35, wpb=32768, bsz=32, num_updates=3800, lr=0.0001924, gnorm=0.235, loss_scale=8, train_wall=286, gb_free=12.9, wall=11195
+2023-10-12 08:06:07 | INFO | train_inner | epoch 001:   3909 / 1830643 loss=3.575, ppl=11.92, wps=11360.3, ups=0.35, wpb=32768, bsz=32, num_updates=3900, lr=0.0001922, gnorm=0.212, loss_scale=8, train_wall=288, gb_free=12.9, wall=11484
+2023-10-12 08:10:51 | INFO | train_inner | epoch 001:   4009 / 1830643 loss=3.677, ppl=12.79, wps=11519.2, ups=0.35, wpb=32768, bsz=32, num_updates=4000, lr=0.000192, gnorm=0.225, loss_scale=8, train_wall=284, gb_free=12.9, wall=11768
+2023-10-12 08:12:18 | INFO | fairseq.trainer | NOTE: gradient overflow detected, ignoring gradient, setting loss scale to: 8.0
+2023-10-12 08:15:40 | INFO | train_inner | epoch 001:   4110 / 1830643 loss=3.58, ppl=11.96, wps=11342.2, ups=0.35, wpb=32768, bsz=32, num_updates=4100, lr=0.0001918, gnorm=0.217, loss_scale=8, train_wall=289, gb_free=12.9, wall=12057
+2023-10-12 08:20:23 | INFO | train_inner | epoch 001:   4210 / 1830643 loss=3.531, ppl=11.56, wps=11596.8, ups=0.35, wpb=32768, bsz=32, num_updates=4200, lr=0.0001916, gnorm=0.212, loss_scale=8, train_wall=282, gb_free=12.9, wall=12339
+2023-10-12 08:25:06 | INFO | train_inner | epoch 001:   4310 / 1830643 loss=3.647, ppl=12.53, wps=11581, ups=0.35, wpb=32768, bsz=32, num_updates=4300, lr=0.0001914, gnorm=0.209, loss_scale=8, train_wall=283, gb_free=12.9, wall=12622
+2023-10-12 08:29:48 | INFO | train_inner | epoch 001:   4410 / 1830643 loss=3.526, ppl=11.52, wps=11586.2, ups=0.35, wpb=32768, bsz=32, num_updates=4400, lr=0.0001912, gnorm=0.218, loss_scale=8, train_wall=282, gb_free=12.9, wall=12905
+2023-10-12 08:34:32 | INFO | train_inner | epoch 001:   4510 / 1830643 loss=3.486, ppl=11.21, wps=11543.2, ups=0.35, wpb=32768, bsz=32, num_updates=4500, lr=0.000191, gnorm=0.209, loss_scale=8, train_wall=284, gb_free=12.9, wall=13189
+2023-10-12 08:39:07 | INFO | fairseq.trainer | NOTE: gradient overflow detected, ignoring gradient, setting loss scale to: 8.0
+2023-10-12 08:39:18 | INFO | train_inner | epoch 001:   4611 / 1830643 loss=3.624, ppl=12.33, wps=11450, ups=0.35, wpb=32768, bsz=32, num_updates=4600, lr=0.0001908, gnorm=0.205, loss_scale=8, train_wall=286, gb_free=12.9, wall=13475
+2023-10-12 08:44:02 | INFO | train_inner | epoch 001:   4711 / 1830643 loss=3.699, ppl=12.99, wps=11565, ups=0.35, wpb=32768, bsz=32, num_updates=4700, lr=0.0001906, gnorm=0.211, loss_scale=8, train_wall=283, gb_free=12.9, wall=13759
+2023-10-12 08:48:44 | INFO | train_inner | epoch 001:   4811 / 1830643 loss=3.702, ppl=13.01, wps=11601.5, ups=0.35, wpb=32768, bsz=32, num_updates=4800, lr=0.0001904, gnorm=0.21, loss_scale=8, train_wall=282, gb_free=12.9, wall=14041
+2023-10-12 08:53:26 | INFO | train_inner | epoch 001:   4911 / 1830643 loss=3.626, ppl=12.35, wps=11626.5, ups=0.35, wpb=32768, bsz=32, num_updates=4900, lr=0.0001902, gnorm=0.194, loss_scale=8, train_wall=281, gb_free=12.9, wall=14323
+2023-10-12 08:58:09 | INFO | train_inner | epoch 001:   5011 / 1830643 loss=3.521, ppl=11.48, wps=11583.9, ups=0.35, wpb=32768, bsz=32, num_updates=5000, lr=0.00019, gnorm=0.217, loss_scale=8, train_wall=283, gb_free=12.9, wall=14606
+2023-10-12 09:02:51 | INFO | train_inner | epoch 001:   5111 / 1830643 loss=3.7, ppl=13, wps=11623.3, ups=0.35, wpb=32768, bsz=32, num_updates=5100, lr=0.0001898, gnorm=0.211, loss_scale=8, train_wall=282, gb_free=12.9, wall=14888
+2023-10-12 09:03:36 | INFO | fairseq.trainer | NOTE: gradient overflow detected, ignoring gradient, setting loss scale to: 8.0
+2023-10-12 09:07:36 | INFO | train_inner | epoch 001:   5212 / 1830643 loss=3.78, ppl=13.74, wps=11495.2, ups=0.35, wpb=32768, bsz=32, num_updates=5200, lr=0.0001896, gnorm=0.221, loss_scale=8, train_wall=285, gb_free=12.9, wall=15173
+2023-10-12 09:12:20 | INFO | train_inner | epoch 001:   5312 / 1830643 loss=3.718, ppl=13.16, wps=11515.4, ups=0.35, wpb=32768, bsz=32, num_updates=5300, lr=0.0001894, gnorm=0.193, loss_scale=8, train_wall=284, gb_free=12.9, wall=15457
+2023-10-12 09:17:05 | INFO | train_inner | epoch 001:   5412 / 1830643 loss=3.571, ppl=11.88, wps=11535, ups=0.35, wpb=32768, bsz=32, num_updates=5400, lr=0.0001892, gnorm=0.193, loss_scale=8, train_wall=284, gb_free=12.9, wall=15741
+2023-10-12 09:21:46 | INFO | train_inner | epoch 001:   5512 / 1830643 loss=3.598, ppl=12.1, wps=11627.9, ups=0.35, wpb=32768, bsz=32, num_updates=5500, lr=0.000189, gnorm=0.244, loss_scale=8, train_wall=281, gb_free=12.9, wall=16023
+2023-10-12 09:26:28 | INFO | train_inner | epoch 001:   5612 / 1830643 loss=3.566, ppl=11.85, wps=11631.9, ups=0.35, wpb=32768, bsz=32, num_updates=5600, lr=0.0001888, gnorm=0.193, loss_scale=8, train_wall=281, gb_free=12.9, wall=16305
+2023-10-12 09:31:10 | INFO | train_inner | epoch 001:   5712 / 1830643 loss=3.602, ppl=12.14, wps=11640.5, ups=0.36, wpb=32768, bsz=32, num_updates=5700, lr=0.0001886, gnorm=0.191, loss_scale=16, train_wall=281, gb_free=12.9, wall=16586
+2023-10-12 09:34:38 | INFO | fairseq.trainer | NOTE: gradient overflow detected, ignoring gradient, setting loss scale to: 8.0
+2023-10-12 09:35:54 | INFO | train_inner | epoch 001:   5813 / 1830643 loss=3.696, ppl=12.96, wps=11523.5, ups=0.35, wpb=32768, bsz=32, num_updates=5800, lr=0.0001884, gnorm=0.214, loss_scale=8, train_wall=284, gb_free=12.9, wall=16871
+2023-10-12 09:40:36 | INFO | train_inner | epoch 001:   5913 / 1830643 loss=3.463, ppl=11.03, wps=11603.4, ups=0.35, wpb=32768, bsz=32, num_updates=5900, lr=0.0001882, gnorm=0.193, loss_scale=8, train_wall=282, gb_free=12.9, wall=17153
+2023-10-12 09:43:21 | INFO | fairseq.trainer | NOTE: gradient overflow detected, ignoring gradient, setting loss scale to: 4.0
+2023-10-12 09:45:22 | INFO | train_inner | epoch 001:   6014 / 1830643 loss=3.451, ppl=10.94, wps=11463.7, ups=0.35, wpb=32768, bsz=32, num_updates=6000, lr=0.000188, gnorm=0.205, loss_scale=4, train_wall=285, gb_free=12.9, wall=17439
+2023-10-12 09:50:05 | INFO | train_inner | epoch 001:   6114 / 1830643 loss=3.461, ppl=11.01, wps=11590.2, ups=0.35, wpb=32768, bsz=32, num_updates=6100, lr=0.0001878, gnorm=0.204, loss_scale=4, train_wall=282, gb_free=12.9, wall=17722
+2023-10-12 09:54:47 | INFO | train_inner | epoch 001:   6214 / 1830643 loss=3.557, ppl=11.77, wps=11619.6, ups=0.35, wpb=32768, bsz=32, num_updates=6200, lr=0.0001876, gnorm=0.202, loss_scale=4, train_wall=282, gb_free=12.9, wall=18004
+2023-10-12 09:59:28 | INFO | train_inner | epoch 001:   6314 / 1830643 loss=3.481, ppl=11.17, wps=11651.8, ups=0.36, wpb=32768, bsz=32, num_updates=6300, lr=0.0001874, gnorm=0.222, loss_scale=4, train_wall=281, gb_free=12.9, wall=18285
+2023-10-12 10:04:09 | INFO | train_inner | epoch 001:   6414 / 1830643 loss=3.776, ppl=13.7, wps=11652.9, ups=0.36, wpb=32768, bsz=32, num_updates=6400, lr=0.0001872, gnorm=0.212, loss_scale=4, train_wall=281, gb_free=12.9, wall=18566
+2023-10-12 10:08:53 | INFO | train_inner | epoch 001:   6514 / 1830643 loss=3.636, ppl=12.43, wps=11542.5, ups=0.35, wpb=32768, bsz=32, num_updates=6500, lr=0.000187, gnorm=0.201, loss_scale=8, train_wall=284, gb_free=12.9, wall=18850
+2023-10-12 10:13:35 | INFO | train_inner | epoch 001:   6614 / 1830643 loss=3.704, ppl=13.03, wps=11620.3, ups=0.35, wpb=32768, bsz=32, num_updates=6600, lr=0.0001868, gnorm=0.195, loss_scale=8, train_wall=282, gb_free=12.9, wall=19132
+2023-10-12 10:18:17 | INFO | train_inner | epoch 001:   6714 / 1830643 loss=3.376, ppl=10.38, wps=11619.7, ups=0.35, wpb=32768, bsz=32, num_updates=6700, lr=0.0001866, gnorm=0.184, loss_scale=8, train_wall=282, gb_free=12.9, wall=19414
+2023-10-12 10:22:59 | INFO | train_inner | epoch 001:   6814 / 1830643 loss=3.574, ppl=11.91, wps=11624.6, ups=0.35, wpb=32768, bsz=32, num_updates=6800, lr=0.0001864, gnorm=0.205, loss_scale=8, train_wall=282, gb_free=12.9, wall=19696
+2023-10-12 10:27:40 | INFO | train_inner | epoch 001:   6914 / 1830643 loss=3.707, ppl=13.06, wps=11663.9, ups=0.36, wpb=32768, bsz=32, num_updates=6900, lr=0.0001862, gnorm=0.196, loss_scale=8, train_wall=281, gb_free=12.9, wall=19977
+2023-10-12 10:32:22 | INFO | train_inner | epoch 001:   7014 / 1830643 loss=3.607, ppl=12.19, wps=11631.6, ups=0.35, wpb=32768, bsz=32, num_updates=7000, lr=0.000186, gnorm=0.191, loss_scale=16, train_wall=281, gb_free=12.9, wall=20259
+2023-10-12 10:37:03 | INFO | train_inner | epoch 001:   7114 / 1830643 loss=3.49, ppl=11.23, wps=11631.7, ups=0.35, wpb=32768, bsz=32, num_updates=7100, lr=0.0001858, gnorm=0.192, loss_scale=16, train_wall=281, gb_free=12.9, wall=20540
+2023-10-12 10:37:51 | INFO | fairseq.trainer | NOTE: gradient overflow detected, ignoring gradient, setting loss scale to: 8.0
+2023-10-12 10:41:48 | INFO | train_inner | epoch 001:   7215 / 1830643 loss=3.506, ppl=11.36, wps=11521.6, ups=0.35, wpb=32768, bsz=32, num_updates=7200, lr=0.0001856, gnorm=0.194, loss_scale=8, train_wall=284, gb_free=12.9, wall=20825
+2023-10-12 10:46:31 | INFO | train_inner | epoch 001:   7315 / 1830643 loss=3.616, ppl=12.26, wps=11586.4, ups=0.35, wpb=32768, bsz=32, num_updates=7300, lr=0.0001854, gnorm=0.184, loss_scale=8, train_wall=282, gb_free=12.9, wall=21108
+2023-10-12 10:47:21 | INFO | fairseq.trainer | NOTE: gradient overflow detected, ignoring gradient, setting loss scale to: 4.0
+2023-10-12 10:51:15 | INFO | train_inner | epoch 001:   7416 / 1830643 loss=3.489, ppl=11.23, wps=11526.5, ups=0.35, wpb=32768, bsz=32, num_updates=7400, lr=0.0001852, gnorm=0.224, loss_scale=4, train_wall=284, gb_free=12.9, wall=21392
+2023-10-12 10:55:19 | INFO | fairseq.trainer | NOTE: gradient overflow detected, ignoring gradient, setting loss scale to: 2.0
+2023-10-12 10:56:01 | INFO | train_inner | epoch 001:   7517 / 1830643 loss=3.287, ppl=9.76, wps=11442.1, ups=0.35, wpb=32768, bsz=32, num_updates=7500, lr=0.000185, gnorm=0.199, loss_scale=2, train_wall=286, gb_free=12.9, wall=21678
+2023-10-12 11:00:42 | INFO | train_inner | epoch 001:   7617 / 1830643 loss=3.47, ppl=11.08, wps=11656.1, ups=0.36, wpb=32768, bsz=32, num_updates=7600, lr=0.0001848, gnorm=0.218, loss_scale=2, train_wall=281, gb_free=12.9, wall=21959
+2023-10-12 11:05:25 | INFO | train_inner | epoch 001:   7717 / 1830643 loss=3.485, ppl=11.2, wps=11615.9, ups=0.35, wpb=32768, bsz=32, num_updates=7700, lr=0.0001846, gnorm=0.191, loss_scale=2, train_wall=282, gb_free=12.9, wall=22241
+2023-10-12 11:10:08 | INFO | train_inner | epoch 001:   7817 / 1830643 loss=3.479, ppl=11.15, wps=11571.3, ups=0.35, wpb=32768, bsz=32, num_updates=7800, lr=0.0001844, gnorm=0.18, loss_scale=2, train_wall=283, gb_free=12.9, wall=22525
+2023-10-12 11:14:50 | INFO | train_inner | epoch 001:   7917 / 1830643 loss=3.584, ppl=12, wps=11602, ups=0.35, wpb=32768, bsz=32, num_updates=7900, lr=0.0001842, gnorm=0.18, loss_scale=2, train_wall=282, gb_free=12.9, wall=22807
+2023-10-12 11:19:35 | INFO | train_inner | epoch 001:   8017 / 1830643 loss=3.628, ppl=12.37, wps=11526, ups=0.35, wpb=32768, bsz=32, num_updates=8000, lr=0.000184, gnorm=0.191, loss_scale=4, train_wall=284, gb_free=12.9, wall=23091
+2023-10-12 11:24:16 | INFO | train_inner | epoch 001:   8117 / 1830643 loss=3.654, ppl=12.59, wps=11641.4, ups=0.36, wpb=32768, bsz=32, num_updates=8100, lr=0.0001838, gnorm=0.19, loss_scale=4, train_wall=281, gb_free=12.9, wall=23373
+2023-10-12 11:29:03 | INFO | train_inner | epoch 001:   8217 / 1830643 loss=3.433, ppl=10.8, wps=11401.9, ups=0.35, wpb=32768, bsz=32, num_updates=8200, lr=0.0001836, gnorm=0.188, loss_scale=4, train_wall=287, gb_free=12.9, wall=23660
+2023-10-12 11:32:26 | INFO | fairseq.trainer | NOTE: gradient overflow detected, ignoring gradient, setting loss scale to: 2.0
+2023-10-12 11:32:29 | INFO | fairseq.trainer | NOTE: gradient overflow detected, ignoring gradient, setting loss scale to: 1.0
+2023-10-12 11:33:57 | INFO | train_inner | epoch 001:   8319 / 1830643 loss=3.577, ppl=11.94, wps=11145.8, ups=0.34, wpb=32768, bsz=32, num_updates=8300, lr=0.0001834, gnorm=0.179, loss_scale=1, train_wall=294, gb_free=12.9, wall=23954
+2023-10-12 11:38:46 | INFO | train_inner | epoch 001:   8419 / 1830643 loss=3.57, ppl=11.88, wps=11360.5, ups=0.35, wpb=32768, bsz=32, num_updates=8400, lr=0.0001832, gnorm=0.204, loss_scale=1, train_wall=288, gb_free=12.9, wall=24243
+2023-10-12 11:43:39 | INFO | train_inner | epoch 001:   8519 / 1830643 loss=3.525, ppl=11.51, wps=11188.4, ups=0.34, wpb=32768, bsz=32, num_updates=8500, lr=0.000183, gnorm=0.188, loss_scale=1, train_wall=293, gb_free=12.9, wall=24535
+2023-10-12 11:48:31 | INFO | train_inner | epoch 001:   8619 / 1830643 loss=3.582, ppl=11.97, wps=11227.8, ups=0.34, wpb=32768, bsz=32, num_updates=8600, lr=0.0001828, gnorm=0.203, loss_scale=1, train_wall=291, gb_free=12.9, wall=24827
+2023-10-12 11:54:01 | INFO | train_inner | epoch 001:   8719 / 1830643 loss=3.508, ppl=11.37, wps=9929.4, ups=0.3, wpb=32768, bsz=32, num_updates=8700, lr=0.0001826, gnorm=0.207, loss_scale=1, train_wall=330, gb_free=12.9, wall=25157
+2023-10-12 11:58:51 | INFO | train_inner | epoch 001:   8819 / 1830643 loss=3.61, ppl=12.21, wps=11283.3, ups=0.34, wpb=32768, bsz=32, num_updates=8800, lr=0.0001824, gnorm=0.182, loss_scale=2, train_wall=290, gb_free=12.9, wall=25448
+2023-10-12 12:03:34 | INFO | train_inner | epoch 001:   8919 / 1830643 loss=3.409, ppl=10.62, wps=11576.5, ups=0.35, wpb=32768, bsz=32, num_updates=8900, lr=0.0001822, gnorm=0.189, loss_scale=2, train_wall=283, gb_free=12.9, wall=25731
+2023-10-12 12:08:21 | INFO | train_inner | epoch 001:   9019 / 1830643 loss=3.612, ppl=12.23, wps=11429.6, ups=0.35, wpb=32768, bsz=32, num_updates=9000, lr=0.000182, gnorm=0.186, loss_scale=2, train_wall=286, gb_free=12.9, wall=26018
+2023-10-12 12:13:05 | INFO | train_inner | epoch 001:   9119 / 1830643 loss=3.523, ppl=11.49, wps=11536.1, ups=0.35, wpb=32768, bsz=32, num_updates=9100, lr=0.0001818, gnorm=0.184, loss_scale=2, train_wall=284, gb_free=12.9, wall=26302
+2023-10-12 12:17:49 | INFO | train_inner | epoch 001:   9219 / 1830643 loss=3.603, ppl=12.15, wps=11538.9, ups=0.35, wpb=32768, bsz=32, num_updates=9200, lr=0.0001816, gnorm=0.2, loss_scale=2, train_wall=284, gb_free=12.9, wall=26586
+2023-10-12 12:22:33 | INFO | train_inner | epoch 001:   9319 / 1830643 loss=3.439, ppl=10.85, wps=11511.6, ups=0.35, wpb=32768, bsz=32, num_updates=9300, lr=0.0001814, gnorm=0.168, loss_scale=4, train_wall=284, gb_free=12.9, wall=26870
+2023-10-12 12:27:16 | INFO | train_inner | epoch 001:   9419 / 1830643 loss=3.838, ppl=14.3, wps=11591.3, ups=0.35, wpb=32768, bsz=32, num_updates=9400, lr=0.0001812, gnorm=0.189, loss_scale=4, train_wall=282, gb_free=12.9, wall=27153
+2023-10-12 12:31:59 | INFO | train_inner | epoch 001:   9519 / 1830643 loss=3.71, ppl=13.09, wps=11575.8, ups=0.35, wpb=32768, bsz=32, num_updates=9500, lr=0.000181, gnorm=0.189, loss_scale=4, train_wall=283, gb_free=12.9, wall=27436
+2023-10-12 12:36:42 | INFO | train_inner | epoch 001:   9619 / 1830643 loss=3.841, ppl=14.33, wps=11595.5, ups=0.35, wpb=32768, bsz=32, num_updates=9600, lr=0.0001808, gnorm=0.187, loss_scale=4, train_wall=282, gb_free=12.9, wall=27719
+2023-10-12 12:41:24 | INFO | train_inner | epoch 001:   9719 / 1830643 loss=3.9, ppl=14.93, wps=11595.1, ups=0.35, wpb=32768, bsz=32, num_updates=9700, lr=0.0001806, gnorm=0.182, loss_scale=4, train_wall=282, gb_free=12.9, wall=28001
+2023-10-12 12:46:07 | INFO | train_inner | epoch 001:   9819 / 1830643 loss=3.57, ppl=11.88, wps=11577, ups=0.35, wpb=32768, bsz=32, num_updates=9800, lr=0.0001804, gnorm=0.182, loss_scale=4, train_wall=283, gb_free=12.9, wall=28284
+2023-10-12 12:50:50 | INFO | train_inner | epoch 001:   9919 / 1830643 loss=3.556, ppl=11.76, wps=11599.4, ups=0.35, wpb=32768, bsz=32, num_updates=9900, lr=0.0001802, gnorm=0.197, loss_scale=8, train_wall=282, gb_free=12.9, wall=28567
+2023-10-12 12:55:32 | INFO | train_inner | epoch 001:  10019 / 1830643 loss=3.569, ppl=11.87, wps=11595.4, ups=0.35, wpb=32768, bsz=32, num_updates=10000, lr=0.00018, gnorm=0.198, loss_scale=8, train_wall=282, gb_free=12.9, wall=28849
+2023-10-12 12:55:32 | INFO | fairseq.checkpoint_utils | Preparing to save checkpoint for epoch 1 @ 10000 updates
+2023-10-12 12:55:32 | INFO | fairseq.trainer | Saving checkpoint to /data/zyu401_data/anirudh/longmem_data/train_ckpt/10x/checkpoint_1_10000.pt
+2023-10-12 12:55:37 | INFO | fairseq.trainer | Finished saving checkpoint to /data/zyu401_data/anirudh/longmem_data/train_ckpt/10x/checkpoint_1_10000.pt
+2023-10-12 12:55:40 | INFO | fairseq.checkpoint_utils | Saved checkpoint /data/zyu401_data/anirudh/longmem_data/train_ckpt/10x/checkpoint_1_10000.pt (epoch 1 @ 10000 updates, score None) (writing took 7.257022390025668 seconds)
+2023-10-12 13:00:26 | INFO | train_inner | epoch 001:  10119 / 1830643 loss=3.631, ppl=12.39, wps=11180.4, ups=0.34, wpb=32768, bsz=32, num_updates=10100, lr=0.0001798, gnorm=0.189, loss_scale=8, train_wall=285, gb_free=12.9, wall=29142
+2023-10-12 13:05:06 | INFO | train_inner | epoch 001:  10219 / 1830643 loss=3.442, ppl=10.87, wps=11669.1, ups=0.36, wpb=32768, bsz=32, num_updates=10200, lr=0.0001796, gnorm=0.183, loss_scale=8, train_wall=280, gb_free=12.9, wall=29423
+2023-10-12 13:09:49 | INFO | train_inner | epoch 001:  10319 / 1830643 loss=3.593, ppl=12.06, wps=11580.8, ups=0.35, wpb=32768, bsz=32, num_updates=10300, lr=0.0001794, gnorm=0.176, loss_scale=8, train_wall=283, gb_free=12.9, wall=29706
+[E ProcessGroupGloo.cpp:138] Rank 1 successfully reached monitoredBarrier, but received errors while waiting for send/recv from rank 0. Please check rank 0 logs for faulty rank.
+[E ProcessGroupGloo.cpp:138] Rank 2 successfully reached monitoredBarrier, but received errors while waiting for send/recv from rank 0. Please check rank 0 logs for faulty rank.
+[E ProcessGroupGloo.cpp:138] Rank 3 successfully reached monitoredBarrier, but received errors while waiting for send/recv from rank 0. Please check rank 0 logs for faulty rank.
+/data/zyu401_data/anirudh/longmem/lib/python3.8/site-packages/faiss/contrib/torch_utils.py:51: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  x.storage().data_ptr() + x.storage_offset() * 4)
+/data/zyu401_data/anirudh/longmem/lib/python3.8/site-packages/faiss/contrib/torch_utils.py:51: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  x.storage().data_ptr() + x.storage_offset() * 4)
+Traceback (most recent call last):
+  File "/data/zyu401_data/anirudh/longmem/bin/fairseq-train", line 8, in <module>
+    sys.exit(cli_main())
+  File "/nethome/zyu401/anirudh/LongMem/fairseq/fairseq_cli/train.py", line 561, in cli_main
+    distributed_utils.call_main(cfg, main)
+  File "/nethome/zyu401/anirudh/LongMem/fairseq/fairseq/distributed/utils.py", line 344, in call_main
+    torch.multiprocessing.spawn(
+  File "/data/zyu401_data/anirudh/longmem/lib/python3.8/site-packages/torch/multiprocessing/spawn.py", line 239, in spawn
+    return start_processes(fn, args, nprocs, join, daemon, start_method='spawn')
+  File "/data/zyu401_data/anirudh/longmem/lib/python3.8/site-packages/torch/multiprocessing/spawn.py", line 197, in start_processes
+    while not context.join():
+  File "/data/zyu401_data/anirudh/longmem/lib/python3.8/site-packages/torch/multiprocessing/spawn.py", line 140, in join
+    raise ProcessExitedException(
+torch.multiprocessing.spawn.ProcessExitedException: process 0 terminated with signal SIGKILL
+/data/zyu401_data/anirudh/longmem/lib/python3.8/multiprocessing/resource_tracker.py:216: UserWarning: resource_tracker: There appear to be 15 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '

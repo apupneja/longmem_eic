@@ -1,0 +1,1 @@
+CUDA_VISIBLE_DEVICES=1 python eval_scripts/knn_eval.py --path /data/zyu401_data/anirudh/longmem_data/train_ckpt/bench/test/checkpoint_1_100000.pt --pretrained-model-path /data/zyu401_data/anirudh/longmem_data/LongMem_public_checkpoints/gpt2_medium/checkpoint_last.pt
