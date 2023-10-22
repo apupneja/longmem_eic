@@ -415,7 +415,7 @@ class TransformerDecoderSideNetBase(FairseqIncrementalDecoder):
         with torch.no_grad():
             self.pretrained_model.eval()
             lm_logits, backbone_hidden_states, previous_qkv, position_encoding = self.pretrained_model(prev_output_tokens, return_all_hiddens=True)
-            self.previous_qkv_list.append(previous_qkv)
+            #self.previous_qkv_list.append(previous_qkv)
             position_encoding = position_encoding[0]
             x = backbone_hidden_states[0].detach().transpose(0, 1)
 

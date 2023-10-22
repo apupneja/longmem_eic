@@ -106,7 +106,7 @@ def main(args):
     with torch.profiler.profile(
         activities=[torch.profiler.ProfilerActivity.CPU, torch.profiler.ProfilerActivity.CUDA],
         schedule=torch.profiler.schedule(wait=1, warmup=1, active=3, repeat=2),
-        on_trace_ready=torch.profiler.tensorboard_trace_handler('./logs/longmem_25x'),
+        on_trace_ready=torch.profiler.tensorboard_trace_handler('./logs/longmem_25x_disable'),
         record_shapes=True,
         profile_memory=True,
         with_stack=True,
@@ -146,7 +146,7 @@ def main(args):
                 tokens = torch.LongTensor([tokens[:-1]]).cuda()
 
                 if "train_ckpt" in args.path:
-                    prediction = model(tokens, features_only=False, disable_add_index=False)
+                    prediction = model(tokens, features_only=False, disable_add_index=True)
                 else:
                     prediction = model(tokens, features_only=False)
                 prediction = prediction[0][0, -1, :].softmax(dim=-1)
