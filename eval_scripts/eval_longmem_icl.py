@@ -12,6 +12,7 @@ from fairseq.data.encoders.gpt2_bpe import GPT2BPE
 import numpy as np
 import itertools
 from math import *
+from libKMCUDA import kmeans_cuda
 
 from torch.profiler import profile, tensorboard_trace_handler, schedule
 
@@ -73,6 +74,43 @@ def load_data(task):
     
     return data
 
+def compute_knn_clusters(model, num_clusters):
+    num_heads = model.decoder.external_memory.num_heads
+    head_dim = model.decoder.external_memory.head_dim
+    chunk_size = model.decoder.external_memory.chunk_size
+    keys_list = [[] for i in range(num_heads)]
+    value_list = [[] for i in range(num_heads)]
+
+    for qkv_val in model.decoder.previous_qkv_list:
+        keys, vals = qkv_val['k'], qkv_val['v']
+        bsz, seq_len = keys.shape[:2]
+        keys = keys.view(bsz*seq_len, num_heads, head_dim)
+        vals = vals.view(bsz*seq_len, num_heads, head_dim)
+
+        keep_dim = (bsz*seq_len)//chunk_size*chunk_size
+        keys_with_chunk = keys[:keep_dim, ...].contiguous().view(keep_dim//chunk_size, chunk_size, num_heads, head_dim)
+        vals_with_chunk = vals[:keep_dim, ...].contiguous().view(keep_dim//chunk_size, chunk_size, num_heads, head_dim)
+
+        for i in range(num_heads):
+            keys_list[i].append(keys_with_chunk[:, :, i, :].mean(dim=-2).cpu().numpy())
+            value_list[i].append(vals_with_chunk[:, :, i, :].mean(dim=-2).cpu().numpy())
+
+    concatenated_keys_array = [np.concatenate(list, axis=0) for list in keys_list]
+    concatenated_values_array = [np.concatenate(list, axis=0) for list in value_list]
+    centroids_list = []
+    assignments_list = []
+    for keys in concatenated_keys_array:
+        centroids, assignments = kmeans_cuda(keys, num_clusters, seed=3)
+        centroids_list.append(centroids)
+        assignments_list.append(assignments)
+
+    return {
+        "centroids": centroids_list,
+        "assignments": assignments_list,
+        "keys_list": concatenated_keys_array,
+        "values_list": concatenated_values_array,
+    }
+
 
 def main(args):
     if "train_ckpt" in args.path:
@@ -105,8 +143,8 @@ def main(args):
     model = model.cuda()
     with torch.profiler.profile(
         activities=[torch.profiler.ProfilerActivity.CPU, torch.profiler.ProfilerActivity.CUDA],
-        schedule=torch.profiler.schedule(wait=1, warmup=1, active=3, repeat=2),
-        on_trace_ready=torch.profiler.tensorboard_trace_handler('./logs/longmem_25x_disable'),
+        schedule=torch.profiler.schedule(wait=0, warmup=1, active=1, repeat=1),
+        on_trace_ready=torch.profiler.tensorboard_trace_handler('/data/zyu401_data/anirudh/logs/knn_1x'),
         record_shapes=True,
         profile_memory=True,
         with_stack=True,
@@ -122,7 +160,7 @@ def main(args):
 
             if "train_ckpt" in args.path:
                 print("Load {} examples into memory".format(args.cache_k))
-                memory_set = [task_template.format(s[0], s[1]) for idx, s in enumerate(data['train'])]
+                memory_set = [task_template.format(s[0], s[1]) for idx, s in enumerate(data['train'])]                
                 tokenized_lines = [tokenizer.encode(line) for line in memory_set]
                 tokenized_ids = [[dictionary.bos()] + dictionary.encode_line(line, add_if_not_exist=False).tolist() for line in tokenized_lines]
                 article_tokens = list(itertools.chain(*tokenized_ids))
@@ -130,13 +168,14 @@ def main(args):
                 article_list = article_list*10
                 for t in article_list:
                     model(torch.LongTensor([t]).cuda())
+                model.decoder.set_knn_config(compute_knn_clusters(model, 50))
                 print(model.decoder.external_memory.index_list[0].ntotal)
             
             total_cnt = 0
             acc_cnt = 0
             
             for step, item in enumerate(data[args.subset]):
-                if step >= (1 + 1 + 3) * 2:
+                if step >= (1 + 1) * 1:
                     break
                 total_cnt += 1
                 test_subset = original_demon_train_subset + [task_template[:-5].format(item[0])]
@@ -175,7 +214,7 @@ if __name__=="__main__":
     parser.add_argument("--task", type=str, default="SST-2", help="The evaluated task for in-context learning")
     parser.add_argument("--gpt-encoder-path", type=str, default="gpt2_bpe", help="The path to the gpt2 encoder and dictionary")
     parser.add_argument("--k", type=int, default=20, help="number of demonstration examples in in-context learning")
-    parser.add_argument("--cache-k", type=int, default=2000, help="number of cached examples in LongMem's memory")
+    parser.add_argument("--cache-k", type=int, default=4000, help="number of cached examples in LongMem's memory")
     parser.add_argument("--subset", type=str, default="test", help="normally test set. But for SST-2, there is no testset, we use validation set instead")
     args = parser.parse_args()
     main(args)

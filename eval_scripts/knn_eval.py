@@ -6,10 +6,10 @@ import os, sys
 import argparse
 import json
 import faiss
-from tqdm import tqdm
 import random
 from argparse import Namespace
 from fairseq.data.encoders.gpt2_bpe import GPT2BPE
+from tqdm import tqdm
 import numpy as np
 import itertools
 from math import *
@@ -75,7 +75,6 @@ def compute_knn_clusters(model, num_clusters):
     num_heads = model.decoder.external_memory.num_heads
     head_dim = model.decoder.external_memory.head_dim
     chunk_size = model.decoder.external_memory.chunk_size
-    print(num_heads)
     keys_list = [[] for i in range(num_heads)]
     value_list = [[] for i in range(num_heads)]
 
@@ -107,6 +106,7 @@ def compute_knn_clusters(model, num_clusters):
         "assignments": assignments_list,
         "keys_list": concatenated_keys_array,
         "values_list": concatenated_values_array,
+        "clusters": num_clusters,
     }
 
 def main(args):
@@ -152,18 +152,19 @@ def main(args):
             tokenized_lines = [tokenizer.encode(line) for line in memory_set]
             tokenized_ids = [[dictionary.bos()] + dictionary.encode_line(line, add_if_not_exist=False).tolist() for line in tokenized_lines]
             article_tokens = list(itertools.chain(*tokenized_ids))
-            print(len(article_tokens))
+            print("Num tokens", len(article_tokens))
             article_list = [article_tokens[i*context_length:(i+1)*context_length] for i in range(ceil(len(article_tokens)//context_length))]
             for t in article_list:
                 model(torch.LongTensor([t]).cuda())
-            compute_knn_clusters(model, 50)
-            model.decoder.set_knn_config(compute_knn_clusters(model, 50))
+            config = compute_knn_clusters(model, args.cluster)
+            model.decoder.set_knn_config(config)
+            model.decoder.layers[int(model.decoder.retrieval_layer_index / model.decoder.layer_reduction_factor)].initalize(config)
             print(model.decoder.external_memory.index_list[0].ntotal)
         
         total_cnt = 0
         acc_cnt = 0
         
-        for item in data[args.subset]:
+        for item in tqdm(data[args.subset]):
             total_cnt += 1
             
             test_subset = original_demon_train_subset + [task_template[:-5].format(item[0])]
@@ -184,11 +185,23 @@ def main(args):
             acc_cnt += (item[1].startswith(prediction.strip()) and prediction.strip() != "")
         
         model_list_acc.append(acc_cnt / total_cnt)
-
+        print("here")
+        print(acc_cnt / total_cnt)
         try:
+            model.decoder.previous_qkv_list.clear()
+            layer = model.decoder.layers[int(model.decoder.retrieval_layer_index / model.decoder.layer_reduction_factor)]
+            for index in layer.index_list:
+                index.reset()
+            for x in layer.cluster_index:
+                for index in x:
+                    index.reset()
+
+            print("CLEAR DONE")
+            
             if model.decoder.external_memory:
                 model.decoder.external_memory.reset()
         except AttributeError:
+            print("CLEAR FAILED")
             pass
 
         print("Acc for random seed {}: {}".format(seed, acc_cnt / total_cnt))
@@ -205,5 +218,6 @@ if __name__=="__main__":
     parser.add_argument("--k", type=int, default=20, help="number of demonstration examples in in-context learning")
     parser.add_argument("--cache-k", type=int, default=2000, help="number of cached examples in LongMem's memory")
     parser.add_argument("--subset", type=str, default="test", help="normally test set. But for SST-2, there is no testset, we use validation set instead")
+    parser.add_argument("--cluster", type=int, default="50", help="number of clusters")
     args = parser.parse_args()
     main(args)

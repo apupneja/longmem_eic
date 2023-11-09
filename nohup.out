@@ -1,0 +1,52 @@
+
+  0%|          | 0/6921 [00:00<?, ?it/s]
+100%|██████████| 6921/6921 [00:00<00:00, 1015347.25it/s]
+
+  0%|          | 0/873 [00:00<?, ?it/s]
+100%|██████████| 873/873 [00:00<00:00, 1287944.91it/s]
+2023-10-29 03:15:31 | INFO | fairseq.tasks.language_modeling | dictionary: 51200 types
+2023-10-29 03:15:37 | INFO | fairseq.tasks.gpt | dictionary: 51200 types
+
+  0%|          | 0/6921 [00:00<?, ?it/s]
+100%|██████████| 6921/6921 [00:00<00:00, 480688.49it/s]
+
+  0%|          | 0/873 [00:00<?, ?it/s]
+100%|██████████| 873/873 [00:00<00:00, 884664.75it/s]
+2023-10-29 03:15:45 | INFO | fairseq.tasks.language_modeling | dictionary: 51200 types
+2023-10-29 03:15:50 | INFO | fairseq.tasks.gpt | dictionary: 51200 types
+Load Pre-trained GPT from /data/zyu401_data/anirudh/longmem_data/LongMem_public_checkpoints/gpt2_medium/checkpoint_last.pt
+NewGPT retrieval Layer Index 17
+Reload from pretrained model layer
+set up external memory
+chunk size 2
+put index from cpu to gpu 0
+put done
+Load 2000 examples into memory
+225847
+0
+
+  0%|          | 0/872 [00:00<?, ?it/s]Load Pre-trained GPT from /data/zyu401_data/anirudh/longmem_data/LongMem_public_checkpoints/gpt2_medium/checkpoint_last.pt
+NewGPT retrieval Layer Index 17
+Reload from pretrained model layer
+set up external memory
+chunk size 2
+put index from cpu to gpu 0
+put done
+Load 2000 examples into memory
+225847
+0
+
+  0%|          | 0/872 [00:00<?, ?it/s]/data/zyu401_data/anirudh/longmem/lib/python3.8/site-packages/faiss/contrib/torch_utils.py:51: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  x.storage().data_ptr() + x.storage_offset() * 4)
+
+  0%|          | 1/872 [03:15<47:24:46, 195.97s/it]
+  0%|          | 2/872 [03:24<20:44:11, 85.81s/it] /data/zyu401_data/anirudh/longmem/lib/python3.8/site-packages/faiss/contrib/torch_utils.py:51: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  x.storage().data_ptr() + x.storage_offset() * 4)
+Acc for random seed 1: 0.768348623853211
+Acc for random seed 2: 0.6341743119266054
+Acc for random seed 3: 0.5974770642201835
+Acc for random seed 4: 0.5435779816513762
+Acc for random seed 5: 0.5217889908256881
+Acc for random seed 6: 0.5493119266055045
+Mean acc across 6 seeds: 0.6024, std: 0.0830
+python: can't open file 'eval_scripts/knn': [Errno 2] No such file or directory

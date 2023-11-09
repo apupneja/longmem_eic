@@ -114,6 +114,7 @@ def main(args):
             tokenized_lines = [tokenizer.encode(line) for line in memory_set]
             tokenized_ids = [[dictionary.bos()] + dictionary.encode_line(line, add_if_not_exist=False).tolist() for line in tokenized_lines]
             article_tokens = list(itertools.chain(*tokenized_ids))
+            print(len(article_tokens))
             article_list = [article_tokens[i*context_length:(i+1)*context_length] for i in range(ceil(len(article_tokens)//context_length))]
             for t in article_list:
                 model(torch.LongTensor([t]).cuda())
@@ -132,7 +133,7 @@ def main(args):
             tokens = torch.LongTensor([tokens[:-1]]).cuda()
 
             if "train_ckpt" in args.path:
-                prediction = model(tokens, features_only=False, disable_add_index=False)
+                prediction = model(tokens, features_only=False, disable_add_index=True)
             else:
                 prediction = model(tokens, features_only=False)
             

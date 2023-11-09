@@ -9,8 +9,8 @@ random.seed(2)
 Please modify the following paths to your local paths.
 """
 project_path="/nethome/zyu401/anirudh/LongMem"
-source_path="/data/zyu401_data/anirudh/pile_split/"
-target_path="/data/zyu401_data/anirudh/longmem_data/"
+source_path="/data/zyu401_data/Pile/pile/train"
+target_path="/research/data/anirudh/re"
 
 def json_write(dataset, sample_json_list):
     with open(target_path + "/train.txt", "a") as write_file:
@@ -51,9 +51,11 @@ This dictionary is generated from a weight matrix. The value refers to number of
 #         shard_file_path = "{}/{}/{}".format(source_path, data, shard)
 #         sampled_shards_tnlg.append(shard_file_path)
 
-# random.shuffle(sampled_shards_tnlg)
+# random.shuffle(sampled_shard
 
-file_list = [os.path.join(source_path, filename) for filename in os.listdir(source_path) if os.path.isfile(os.path.join(source_path, filename))]
+file_list = [os.path.join(source_path, filename) for filename in os.listdir(source_path) if os.path.isfile(os.path.join(source_path, filename)) and filename.endswith(".jsonl") and not filename.endswith(".jsonl.zst")]
+
+print(file_list)
 
 with open(target_path + "/train.txt", "a", encoding="utf-8") as write_file:
     for file_name in tqdm(file_list):

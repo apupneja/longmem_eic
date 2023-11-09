@@ -19,6 +19,8 @@ from fairseq.models.transformer import (
     TransformerConfig,
 )
 from fairseq.checkpoint_utils import load_model_ensemble
+import time
+import pickle
 
 class TransformerDecoderSideNetLayer(nn.Module):
     """Decoder layer block for Side Network.
@@ -90,7 +92,7 @@ class TransformerDecoderSideNetLayer(nn.Module):
         self.onnx_trace = False
         self.precompute_retrieval_output = None
 
-        self.index_list = []
+        self.index_list = np.empty(self.num_heads,dtype=object)
         self.chunk_size = getattr(cfg, "chunk_size", 4)
         self.dimension = cfg.decoder.embed_dim
         self.head_dim_mem = int(self.dimension / self.num_heads)
@@ -148,70 +150,198 @@ class TransformerDecoderSideNetLayer(nn.Module):
     def residual_connection(self, x, residual):
         return residual + x
 
+    def initalize(self, knn_config):
+        centroid_list = knn_config["centroids"]
+        assignments = knn_config["assignments"]
+        keys_list = knn_config["keys_list"]
+        values_list = knn_config["values_list"]
+        num_clusters = knn_config["clusters"]
+        
+        self.keys_assignment_store = np.zeros((self.num_heads, num_clusters), dtype = object)
+        self.values_assignment_store = np.zeros((self.num_heads, num_clusters), dtype = object)
+
+        for i in range(self.num_heads):
+            for j in range(num_clusters):
+                self.keys_assignment_store[i][j] = np.empty((0, 64))
+                self.values_assignment_store[i][j] = np.empty((0, 64))
+
+        # print("here1")
+        for i in range(self.num_heads):
+            print(i)
+            for index, assignment in enumerate(assignments[i]):
+                self.keys_assignment_store[i][assignment] = np.vstack((self.keys_assignment_store[i][assignment], keys_list[i][index]))
+                self.values_assignment_store[i][assignment] = np.vstack((self.values_assignment_store[i][assignment], values_list[i][index]))
+        print('put index from cpu to gpu {}'.format(torch.cuda.current_device()))
+
+        self.res = faiss.StandardGpuResources()
+        for i in range(self.num_heads):
+            gpu_index = faiss.IndexFlatIP(self.head_dim_mem)
+            gpu_index = faiss.index_cpu_to_gpu(self.res, torch.cuda.current_device(), gpu_index)
+            self.index_list[i] = gpu_index
+
+        self.cluster_index = np.empty((self.num_heads, num_clusters), dtype = object)
+        for i in range(self.num_heads):
+            for j in range(num_clusters):
+                index = faiss.IndexFlatIP(self.head_dim_mem)
+                index = faiss.index_cpu_to_gpu(self.res, torch.cuda.current_device(), index)
+                
+                index.add(self.keys_assignment_store[i][j].astype(np.float32))
+                self.cluster_index[i][j] = index
+
+        
+        for i, index in enumerate(centroid_list):
+            self.index_list[i].add(index)
+
     def calc_retrieval_output(self, knn_config, queries):
         centroid_list = knn_config["centroids"]
         assignments = knn_config["assignments"]
         keys_list = knn_config["keys_list"]
         values_list = knn_config["values_list"]
-
-        num_clusters = 50
+        num_clusters = knn_config["clusters"]
         
-        if len(self.index_list) == 0:
-            keys_assignment_store = np.empty((self.num_heads, num_clusters), dtype = object)
-            values_assignment_store = np.empty((self.num_heads, num_clusters), dtype = object)
+        # if len(self.index_list) == 0:
+        #     self.keys_assignment_store = np.zeros((self.num_heads, num_clusters), dtype = object)
+        #     self.values_assignment_store = np.zeros((self.num_heads, num_clusters), dtype = object)
 
-            for i in range(self.num_heads):
-                for j in range(num_clusters):
-                    keys_assignment_store[i][j] = []
-                    values_assignment_store[i][j] = []
+        #     for i in range(self.num_heads):
+        #         for j in range(num_clusters):
+        #             self.keys_assignment_store[i][j] = np.empty((0, 64))
+        #             self.values_assignment_store[i][j] = np.empty((0, 64))
 
-            for i in range(self.num_heads):
-                for index, assignment in enumerate(assignments[i]):
-                    keys_assignment_store[i][assignment].append(keys_list[i][index])
-                    values_assignment_store[i][assignment].append(values_list[i][index])
+        #     # print("here1")
+        #     for i in range(self.num_heads):
+        #         print(i)
+        #         for index, assignment in enumerate(assignments[i]):
+        #             self.keys_assignment_store[i][assignment] = np.vstack((self.keys_assignment_store[i][assignment], keys_list[i][index]))
+        #             self.values_assignment_store[i][assignment] = np.vstack((self.values_assignment_store[i][assignment], values_list[i][index]))
+        #     print('put index from cpu to gpu {}'.format(torch.cuda.current_device()))
 
-            print('put index from cpu to gpu {}'.format(torch.cuda.current_device()))
+        #     self.res = faiss.StandardGpuResources()
+        #     for i in range(self.num_heads):
+        #         gpu_index = faiss.IndexFlatIP(self.head_dim_mem)
+        #         gpu_index = faiss.index_cpu_to_gpu(self.res, torch.cuda.current_device(), gpu_index)
+        #         self.index_list.append(gpu_index)
 
-            self.res = faiss.StandardGpuResources()
-            for i in range(self.num_heads):
-                gpu_index = faiss.IndexFlatIP(self.head_dim_mem)
-                gpu_index = faiss.index_cpu_to_gpu(self.res, torch.cuda.current_device(), gpu_index)
-                self.index_list.append(gpu_index)
-
-            self.cluster_index = np.empty((self.num_heads, num_clusters), dtype = object)
-            for i in range(self.num_heads):
-                for j in range(num_clusters):
-                    index = faiss.IndexFlatIP(self.head_dim_mem)
-                    index = faiss.index_cpu_to_gpu(self.res, torch.cuda.current_device(), index)
+        #     self.cluster_index = np.empty((self.num_heads, num_clusters), dtype = object)
+        #     for i in range(self.num_heads):
+        #         for j in range(num_clusters):
+        #             index = faiss.IndexFlatIP(self.head_dim_mem)
+        #             index = faiss.index_cpu_to_gpu(self.res, torch.cuda.current_device(), index)
                     
-                    index.add(np.array(keys_assignment_store[i][j]))
-                    self.cluster_index[i][j] = index
+        #             index.add(self.keys_assignment_store[i][j].astype(np.float32))
+        #             self.cluster_index[i][j] = index
 
             
-            for i, index in enumerate(centroid_list):
-                self.index_list[i].add(index)
+        #     for i, index in enumerate(centroid_list):
+        #         self.index_list[i].add(index)
 
         seq_len, bsz, hid_size = queries.shape
         queries = queries.view(seq_len*bsz, self.num_heads, self.head_dim_mem).type(torch.float32)
+        start = time.time()
+
+        # for i in range(self.num_heads)
         indexs = [self.index_list[i].search(queries[:, i, :].contiguous().cpu(), 1)[1] for i in range(self.num_heads)]
+        end = time.time()
+        # print("search number 1:",end-start)
         
-        indices = [
-            [
-                self.cluster_index[i][index[j]]
-                .search(
-                    queries[j, i, :].view(1, -1).contiguous().cpu(),
-                    (self.k) // self.chunk_size
-                )[1]
-                for j in range(seq_len * bsz)
-            ]
-            for i, index in enumerate(indexs)
-        ]
+        start = time.time()
+        indices = np.zeros((self.num_heads, seq_len * bsz, self.head_dim_mem))
+        for i, index in enumerate(indexs):
+            for j in range(seq_len * bsz):
+                indices[i,j,:] = self.cluster_index[i][index[j]].search(
+                                        queries[j, i, :].view(1,-1).contiguous().cpu(),
+                                        self.k
+                                    )[1]
+        # indices = [
+        #     [
+        #         self.cluster_index[i][index[j]]
+        #         .search(
+        #             queries[j, i, :].view(1,-1).contiguous().cpu(),
+        #             self.k
+        #         )[1]
+        #         for j in range(seq_len * bsz)
+        #     ]
+        #     for i, index in enumerate(indexs)
+        # ]
+        end = time.time()
+        # print("search number 2:", end - start)
 
-        indices = [torch.cat(index, dim=0) for index in indices]
+        # indices = [torch.cat(index, dim=0) for index in indices]
+        start = time.time()
 
-        keys_tgt_index = [torch.cat([torch.tensor(keys_assignment_store[i][indexs[i][j]][indices[i][j]]) for j in range(seq_len*bsz)], dim=0).view(seq_len*bsz, self.k, self.head_dim_mem).numpy() for i in range(self.num_heads)]
-        vals_tgt_index = [torch.cat([torch.tensor(values_assignment_store[i][index[i][j]][indices[i][j]]) for j in range(seq_len*bsz)], dim=0).view(seq_len*bsz, self.k, self.head_dim_mem).numpy() for i in range(self.num_heads)]
+        # for i in range(self.num_heads):
+        #     keys_list = np.zeros((seq_len * bsz, self.k, self.head_dim_mem))
+        #     values_list = np.zeros((seq_len * bsz, self.k, self.head_dim_mem))
+        #     for j in range(seq_len * bsz):
+        #         indices_i_j = indices[i][j]
+        #         key_values = np.zeros((len(indices_i_j), self.head_dim_mem))
+        #         value_values = np.zeros((len(indices_i_j), self.head_dim_mem))
 
+        #         for pos, k in enumerate(indices_i_j):
+        #             key_values[pos, :] = self.keys_assignment_store[i][indexs[i][j]][k]
+        #             value_values[pos, :] = self.values_assignment_store[i][indexs[i][j]][k]
+
+        #         concatenated_keys = key_values.reshape(-1, self.k, self.head_dim_mem)
+        #         concatenated_values = value_values.reshape(-1, self.k, self.head_dim_mem)
+        #         keys_list[j,:,:] = concatenated_keys
+        #         values_list[j,:,:] = concatenated_values
+            
+        #     keys_tgt_index[i ,: ,: ,: ] = keys_list
+        #     vals_tgt_index[i ,: ,: ,: ] = values_list
+        # for i in range(self.num_heads):
+        #     for j in range(seq_len * bsz):
+        #         keys_tgt_index[i, j, :, :] = np.array([
+        #             self.keys_assignment_store[i][indexs[i][j]][int(k)]
+        #             for k in indices[i][j]
+        #         ]).reshape(self.k, self.head_dim_mem)
+
+        #         vals_tgt_index[i, j, :, :] = np.array([
+        #             self.values_assignment_store[i][indexs[i][j]][int(k)]
+        #             for k in indices[i][j]
+        #         ]).reshape(self.k, self.head_dim_mem)
+
+        keys_tgt_index = []
+        vals_tgt_index = []
+
+        for i in range(self.num_heads):
+            keys_list = []
+            values_list = []
+            
+            for j in range(seq_len * bsz):
+                indices_i_j = indices[i][j] # 16
+                indices_i_j = [int(x) for x in indices_i_j]
+                key_values = []
+                value_values = []
+                concatenated_keys = torch.tensor(self.keys_assignment_store[i][indexs[i][j]][indices_i_j].reshape(-1, self.k, self.head_dim_mem))
+                concatenated_values = torch.tensor(self.values_assignment_store[i][indexs[i][j]][indices_i_j].reshape(-1, self.k, self.head_dim_mem))
+                    
+                keys_list.append(concatenated_keys)
+                values_list.append(concatenated_values)
+        #         print(1)
+
+            keys_tgt_index.append(torch.cat(keys_list, dim=0))
+            vals_tgt_index.append(torch.cat(values_list, dim=0))
+        end = time.time()
+        # print("value fetch", end - start)
+        # keys_tgt_index = [torch.cat([torch.tensor(keys_assignment_store[i][indexs[i][j]][indices[i][j][k]]) for k in range(len(indices[i][j])) for j in range(seq_len*bsz)], dim=0).view(seq_len*bsz, self.k, self.head_dim_mem).numpy() for i in range(self.num_heads)]
+        # vals_tgt_index = [torch.cat([torch.tensor(values_assignment_store[i][indexs[i][j]][indices[i][j][k]]) for k in range(len(indices[i][j])) for j in range(seq_len*bsz)], dim=0).view(seq_len*bsz, self.k, self.head_dim_mem).numpy() for i in range(self.num_heads)]
+
+        # keys_tgt_index = [torch.from_numpy(arr) for arr in keys_tgt_index]
+        # vals_tgt_index = [torch.from_numpy(arr) for arr in vals_tgt_index]
+
+        # keys_tgt_index = np.stack(keys_tgt_index, axis=1).reshape((seq_len, bsz * self.num_heads, self.k, self.head_dim)).transpose(1, 0, 2, 3)
+        # vals_tgt_index = np.stack(vals_tgt_index, axis=1).reshape((seq_len, bsz * self.num_heads, self.k, self.head_dim)).transpose(1, 0, 2, 3)
+
+        # keys_tgt_index = torch.from_numpy(keys_tgt_index)
+        # vals_tgt_index = torch.from_numpy(vals_tgt_index)
+
+        start = time.time()
+
+        keys_tgt_index = torch.stack(keys_tgt_index).view(seq_len, bsz*self.num_heads, self.k, self.head_dim).transpose(0, 1)
+        vals_tgt_index = torch.stack(vals_tgt_index).view(seq_len, bsz*self.num_heads, self.k, self.head_dim).transpose(0, 1)
+        end = time.time()
+
+        # print("final", end-start)
         return {'knn_index': indexs, 'tgt_index': {"k": keys_tgt_index, "v": vals_tgt_index}}
 
 
@@ -276,7 +406,7 @@ class TransformerDecoderSideNetLayer(nn.Module):
                 self.precompute_retrieval_output = external_memory.retrieve(self.self_attn.q_proj(x))
 
         if external_memory is not None and calc_context is None:
-            if external_memory.dstore_idx == 0:
+            if external_memory.dstore_idx == 0 and knn_config is None:
                 long_context_retrieval = None
             else:
                 if precompute_retrieval is not None:
