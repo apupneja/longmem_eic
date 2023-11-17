@@ -183,8 +183,10 @@ class TransformerDecoderSideNetLayer(nn.Module):
         for i in range(self.num_heads):
             for j in range(num_clusters):
                 index = faiss.IndexFlatIP(self.head_dim_mem)
+                # index = faiss.IndexIVFPQ(index, self.head_dim_mem, 25, 4, 8)
                 index = faiss.index_cpu_to_gpu(self.res, torch.cuda.current_device(), index)
                 
+                # index.train(self.keys_assignment_store[i][j].astype(np.float32))
                 index.add(self.keys_assignment_store[i][j].astype(np.float32))
                 self.cluster_index[i][j] = index
 
@@ -252,53 +254,6 @@ class TransformerDecoderSideNetLayer(nn.Module):
                                         queries[j, i, :].view(1,-1).contiguous().cpu(),
                                         self.k
                                     )[1]
-        # indices = [
-        #     [
-        #         self.cluster_index[i][index[j]]
-        #         .search(
-        #             queries[j, i, :].view(1,-1).contiguous().cpu(),
-        #             self.k
-        #         )[1]
-        #         for j in range(seq_len * bsz)
-        #     ]
-        #     for i, index in enumerate(indexs)
-        # ]
-        end = time.time()
-        # print("search number 2:", end - start)
-
-        # indices = [torch.cat(index, dim=0) for index in indices]
-        start = time.time()
-
-        # for i in range(self.num_heads):
-        #     keys_list = np.zeros((seq_len * bsz, self.k, self.head_dim_mem))
-        #     values_list = np.zeros((seq_len * bsz, self.k, self.head_dim_mem))
-        #     for j in range(seq_len * bsz):
-        #         indices_i_j = indices[i][j]
-        #         key_values = np.zeros((len(indices_i_j), self.head_dim_mem))
-        #         value_values = np.zeros((len(indices_i_j), self.head_dim_mem))
-
-        #         for pos, k in enumerate(indices_i_j):
-        #             key_values[pos, :] = self.keys_assignment_store[i][indexs[i][j]][k]
-        #             value_values[pos, :] = self.values_assignment_store[i][indexs[i][j]][k]
-
-        #         concatenated_keys = key_values.reshape(-1, self.k, self.head_dim_mem)
-        #         concatenated_values = value_values.reshape(-1, self.k, self.head_dim_mem)
-        #         keys_list[j,:,:] = concatenated_keys
-        #         values_list[j,:,:] = concatenated_values
-            
-        #     keys_tgt_index[i ,: ,: ,: ] = keys_list
-        #     vals_tgt_index[i ,: ,: ,: ] = values_list
-        # for i in range(self.num_heads):
-        #     for j in range(seq_len * bsz):
-        #         keys_tgt_index[i, j, :, :] = np.array([
-        #             self.keys_assignment_store[i][indexs[i][j]][int(k)]
-        #             for k in indices[i][j]
-        #         ]).reshape(self.k, self.head_dim_mem)
-
-        #         vals_tgt_index[i, j, :, :] = np.array([
-        #             self.values_assignment_store[i][indexs[i][j]][int(k)]
-        #             for k in indices[i][j]
-        #         ]).reshape(self.k, self.head_dim_mem)
 
         keys_tgt_index = []
         vals_tgt_index = []
@@ -322,18 +277,6 @@ class TransformerDecoderSideNetLayer(nn.Module):
             keys_tgt_index.append(torch.cat(keys_list, dim=0))
             vals_tgt_index.append(torch.cat(values_list, dim=0))
         end = time.time()
-        # print("value fetch", end - start)
-        # keys_tgt_index = [torch.cat([torch.tensor(keys_assignment_store[i][indexs[i][j]][indices[i][j][k]]) for k in range(len(indices[i][j])) for j in range(seq_len*bsz)], dim=0).view(seq_len*bsz, self.k, self.head_dim_mem).numpy() for i in range(self.num_heads)]
-        # vals_tgt_index = [torch.cat([torch.tensor(values_assignment_store[i][indexs[i][j]][indices[i][j][k]]) for k in range(len(indices[i][j])) for j in range(seq_len*bsz)], dim=0).view(seq_len*bsz, self.k, self.head_dim_mem).numpy() for i in range(self.num_heads)]
-
-        # keys_tgt_index = [torch.from_numpy(arr) for arr in keys_tgt_index]
-        # vals_tgt_index = [torch.from_numpy(arr) for arr in vals_tgt_index]
-
-        # keys_tgt_index = np.stack(keys_tgt_index, axis=1).reshape((seq_len, bsz * self.num_heads, self.k, self.head_dim)).transpose(1, 0, 2, 3)
-        # vals_tgt_index = np.stack(vals_tgt_index, axis=1).reshape((seq_len, bsz * self.num_heads, self.k, self.head_dim)).transpose(1, 0, 2, 3)
-
-        # keys_tgt_index = torch.from_numpy(keys_tgt_index)
-        # vals_tgt_index = torch.from_numpy(vals_tgt_index)
 
         start = time.time()
 

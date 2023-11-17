@@ -24,8 +24,7 @@ class External_Memory:
         self.num_heads = cfg.decoder.attention_heads
         self.head_dim = int(self.dimension / self.num_heads)
         self.chunk_size = getattr(cfg, "chunk_size", 4)
-        print("chunk size", self.chunk_size)
-
+        print("CHUNK SIZE", self.chunk_size)
         if self.use_gpu_to_search:
             self.index_list = []
             print('put index from cpu to gpu {}'.format(torch.cuda.current_device()))
