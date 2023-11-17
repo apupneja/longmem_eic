@@ -150,14 +150,14 @@ def main(args):
 
         if "train_ckpt" in args.path:
             print("Load {} examples into memory".format(args.cache_k))
-            # memory_set = None
-            # if args.data == "d1":
-            #     memory_set = np.load("/data/zyu401_data/anirudh/d1.npy")
-            # elif args.data == "d2":
-            #     memory_set = np.load("/data/zyu401_data/anirudh/d2.npy")
-            # elif args.data == "d3":
-            #     memory_set = np.load("/data/zyu401_data/anirudh/d3.npy")
-            memory_set = [task_template.format(s[0], s[1]) for idx, s in enumerate(data['train'])]
+            memory_set = None
+            if args.data == "d1":
+                memory_set = np.load("/data/zyu401_data/anirudh/d1.npy")
+            elif args.data == "d2":
+                memory_set = np.load("/data/zyu401_data/anirudh/d2.npy")
+            elif args.data == "d3":
+                memory_set = np.load("/data/zyu401_data/anirudh/d3.npy")
+            # memory_set = [task_template.format(s[0], s[1]) for idx, s in enumerate(data['train'])]
 
             tokenized_lines = [tokenizer.encode(line) for line in memory_set]
             tokenized_ids = [[dictionary.bos()] + dictionary.encode_line(line, add_if_not_exist=False).tolist() for line in tokenized_lines]
@@ -203,6 +203,9 @@ def main(args):
         try:
             model.decoder.previous_qkv_list.clear()
             layer = model.decoder.layers[int(model.decoder.retrieval_layer_index / model.decoder.layer_reduction_factor)]
+            file_str = f"/data/zyu401_data/anirudh/cluster/{args.task}_{seed}_{args.data}.npy"
+            np.save(file_str, layer.cluster_allocation)
+            layer.cluster_allocation = np.empty(16,dtype=object)
             for index in layer.index_list:
                 index.reset()
             for x in layer.cluster_index:

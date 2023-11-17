@@ -415,9 +415,9 @@ class TransformerDecoderSideNetBase(FairseqIncrementalDecoder):
         with torch.no_grad():
             self.pretrained_model.eval()
             lm_logits, backbone_hidden_states, previous_qkv, position_encoding = self.pretrained_model(prev_output_tokens, return_all_hiddens=True)
-            if not disable_add_index:
-                previous_qkv = {k: v.to('cpu') for k, v in previous_qkv.items()}
-                self.previous_qkv_list.append(previous_qkv)
+            # if not disable_add_index:
+            #     previous_qkv = {k: v.to('cpu') for k, v in previous_qkv.items()}
+            #     self.previous_qkv_list.append(previous_qkv)
             position_encoding = position_encoding[0]
             x = backbone_hidden_states[0].detach().transpose(0, 1)
 
@@ -485,8 +485,8 @@ class TransformerDecoderSideNetBase(FairseqIncrementalDecoder):
                     # precompute_retrieval=self.precompute_retrieval,
                     knn_config = self.knn_utils,
                 )
-                # if not disable_add_index:
-                #     self.external_memory.add_index(previous_qkv)#, prev_output_tokens != self.padding_idx)
+                if not disable_add_index:
+                    self.external_memory.add_index(previous_qkv)#, prev_output_tokens != self.padding_idx)
             elif idx == int(self.retrieval_layer_index / self.layer_reduction_factor - self.precompute_mem_layer):
                 x, layer_attn, _ = layer(
                     x,

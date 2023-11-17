@@ -98,6 +98,8 @@ class TransformerDecoderSideNetLayer(nn.Module):
         self.head_dim_mem = int(self.dimension / self.num_heads)
         self.k = cfg.k
 
+        self.cluster_allocation = np.empty(self.num_heads,dtype=object)
+
     def build_fc1(self, input_dim, output_dim, q_noise, qn_block_size):
         return quant_noise(nn.Linear(input_dim, output_dim), q_noise, qn_block_size)
 
@@ -156,6 +158,9 @@ class TransformerDecoderSideNetLayer(nn.Module):
         keys_list = knn_config["keys_list"]
         values_list = knn_config["values_list"]
         num_clusters = knn_config["clusters"]
+
+        for i in range(self.num_heads):
+            self.cluster_allocation[i] = np.zeros(num_clusters)
         
         self.keys_assignment_store = np.zeros((self.num_heads, num_clusters), dtype = object)
         self.values_assignment_store = np.zeros((self.num_heads, num_clusters), dtype = object)
@@ -250,6 +255,7 @@ class TransformerDecoderSideNetLayer(nn.Module):
         indices = np.zeros((self.num_heads, seq_len * bsz, self.head_dim_mem))
         for i, index in enumerate(indexs):
             for j in range(seq_len * bsz):
+                self.cluster_allocation[i][index[j]]+=1
                 indices[i,j,:] = self.cluster_index[i][index[j]].search(
                                         queries[j, i, :].view(1,-1).contiguous().cpu(),
                                         self.k

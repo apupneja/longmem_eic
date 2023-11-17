@@ -107,18 +107,25 @@ def main(args):
         original_demon_train_subset = [task_template.format(s[0], s[1]) for s in original_demon_train_subset]
         demonstration = "".join(original_demon_train_subset)
 
-        # if "train_ckpt" in args.path:
-        #     print("Load {} examples into memory".format(args.cache_k))
-        #     memory_set = [task_template.format(s[0], s[1]) for idx, s in enumerate(random.sample(data['train'], args.cache_k))]
+        if "train_ckpt" in args.path:
+            print("Load {} examples into memory".format(args.cache_k))
+            # memory_set = [task_template.format(s[0], s[1]) for idx, s in enumerate(random.sample(data['train'], args.cache_k))]
+            memory_set = None
+            if args.data == "d1":
+                memory_set = np.load("/data/zyu401_data/anirudh/d1.npy")
+            elif args.data == "d2":
+                memory_set = np.load("/data/zyu401_data/anirudh/d2.npy")
+            elif args.data == "d3":
+                memory_set = np.load("/data/zyu401_data/anirudh/d3.npy")
 
-        #     tokenized_lines = [tokenizer.encode(line) for line in memory_set]
-        #     tokenized_ids = [[dictionary.bos()] + dictionary.encode_line(line, add_if_not_exist=False).tolist() for line in tokenized_lines]
-        #     article_tokens = list(itertools.chain(*tokenized_ids))
-        #     print(len(article_tokens))
-        #     article_list = [article_tokens[i*context_length:(i+1)*context_length] for i in range(ceil(len(article_tokens)//context_length))]
-        #     for t in article_list:
-        #         model(torch.LongTensor([t]).cuda())
-        #     print(model.decoder.external_memory.index_list[0].ntotal)
+            tokenized_lines = [tokenizer.encode(line) for line in memory_set]
+            tokenized_ids = [[dictionary.bos()] + dictionary.encode_line(line, add_if_not_exist=False).tolist() for line in tokenized_lines]
+            article_tokens = list(itertools.chain(*tokenized_ids))
+            print(len(article_tokens))
+            article_list = [article_tokens[i*context_length:(i+1)*context_length] for i in range(ceil(len(article_tokens)//context_length))]
+            for t in article_list:
+                model(torch.LongTensor([t]).cuda())
+            print(model.decoder.external_memory.index_list[0].ntotal)
         
         total_cnt = 0
         acc_cnt = 0
@@ -164,5 +171,6 @@ if __name__=="__main__":
     parser.add_argument("--k", type=int, default=20, help="number of demonstration examples in in-context learning")
     parser.add_argument("--cache-k", type=int, default=2000, help="number of cached examples in LongMem's memory")
     parser.add_argument("--subset", type=str, default="test", help="normally test set. But for SST-2, there is no testset, we use validation set instead")
+    parser.add_argument("--data", type = str, default = "d1")
     args = parser.parse_args()
     main(args)
