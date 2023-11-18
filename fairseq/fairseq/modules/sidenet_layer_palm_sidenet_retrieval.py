@@ -152,12 +152,19 @@ class TransformerDecoderSideNetLayer(nn.Module):
     def residual_connection(self, x, residual):
         return residual + x
 
+    def clear_cluster_allocation(self, num_clusters):
+        for i in range(self.num_heads):
+            self.cluster_allocation[i] = np.zeros(num_clusters)
+
     def initalize(self, knn_config):
         centroid_list = knn_config["centroids"]
         assignments = knn_config["assignments"]
         keys_list = knn_config["keys_list"]
         values_list = knn_config["values_list"]
         num_clusters = knn_config["clusters"]
+        keys_list_chunk = knn_config["keys_list_chunk"]
+        values_list_chunk = knn_config["values_list_chunk"]
+        self.chunk_size = knn_config["chunk_size"]
 
         for i in range(self.num_heads):
             self.cluster_allocation[i] = np.zeros(num_clusters)
@@ -165,10 +172,15 @@ class TransformerDecoderSideNetLayer(nn.Module):
         self.keys_assignment_store = np.zeros((self.num_heads, num_clusters), dtype = object)
         self.values_assignment_store = np.zeros((self.num_heads, num_clusters), dtype = object)
 
+        self.keys_assignment_store_chunk = np.zeros((self.num_heads, num_clusters), dtype=object)
+        self.values_assignment_store_chunk = np.zeros((self.num_heads, num_clusters), dtype=object)
+
         for i in range(self.num_heads):
             for j in range(num_clusters):
                 self.keys_assignment_store[i][j] = np.empty((0, 64))
                 self.values_assignment_store[i][j] = np.empty((0, 64))
+                self.keys_assignment_store_chunk[i][j] = np.empty((0, self.chunk_size, 64))
+                self.values_assignment_store_chunk[i][j] = np.empty((0, self.chunk_size, 64))
 
         # print("here1")
         for i in range(self.num_heads):
@@ -176,6 +188,12 @@ class TransformerDecoderSideNetLayer(nn.Module):
             for index, assignment in enumerate(assignments[i]):
                 self.keys_assignment_store[i][assignment] = np.vstack((self.keys_assignment_store[i][assignment], keys_list[i][index]))
                 self.values_assignment_store[i][assignment] = np.vstack((self.values_assignment_store[i][assignment], values_list[i][index]))
+
+                self.keys_assignment_store_chunk[i][assignment] = np.vstack((self.keys_assignment_store_chunk[i][assignment], keys_list_chunk[i][index].reshape((1, self.chunk_size, 64))))
+                self.values_assignment_store_chunk[i][assignment] = np.vstack((self.values_assignment_store_chunk[i][assignment], values_list_chunk[i][index].reshape((1, self.chunk_size, 64))))
+
+        print(self.keys_assignment_store_chunk[0][0].shape)
+
         print('put index from cpu to gpu {}'.format(torch.cuda.current_device()))
 
         self.res = faiss.StandardGpuResources()
@@ -252,13 +270,13 @@ class TransformerDecoderSideNetLayer(nn.Module):
         # print("search number 1:",end-start)
         
         start = time.time()
-        indices = np.zeros((self.num_heads, seq_len * bsz, self.head_dim_mem))
+        indices = np.zeros((self.num_heads, seq_len * bsz, self.k // self.chunk_size))
         for i, index in enumerate(indexs):
             for j in range(seq_len * bsz):
                 self.cluster_allocation[i][index[j]]+=1
                 indices[i,j,:] = self.cluster_index[i][index[j]].search(
                                         queries[j, i, :].view(1,-1).contiguous().cpu(),
-                                        self.k
+                                        self.k // self.chunk_size
                                     )[1]
 
         keys_tgt_index = []
@@ -273,8 +291,8 @@ class TransformerDecoderSideNetLayer(nn.Module):
                 indices_i_j = [int(x) for x in indices_i_j]
                 key_values = []
                 value_values = []
-                concatenated_keys = torch.tensor(self.keys_assignment_store[i][indexs[i][j]][indices_i_j].reshape(-1, self.k, self.head_dim_mem))
-                concatenated_values = torch.tensor(self.values_assignment_store[i][indexs[i][j]][indices_i_j].reshape(-1, self.k, self.head_dim_mem))
+                concatenated_keys = torch.tensor(self.keys_assignment_store_chunk[i][indexs[i][j]][indices_i_j].reshape(-1, self.k, self.head_dim_mem))
+                concatenated_values = torch.tensor(self.values_assignment_store_chunk[i][indexs[i][j]][indices_i_j].reshape(-1, self.k, self.head_dim_mem))
                     
                 keys_list.append(concatenated_keys)
                 values_list.append(concatenated_values)

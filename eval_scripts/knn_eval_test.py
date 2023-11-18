@@ -13,6 +13,7 @@ from tqdm import tqdm
 import numpy as np
 import itertools
 from math import *
+import collections
 
 
 DEFAULT_ENCODER_JSON = "https://dl.fbaipublicfiles.com/fairseq/gpt2_bpe/encoder.json"
@@ -72,8 +73,6 @@ def load_data(task):
     return data
 
 def compute_knn_clusters(model, num_clusters):
-    import ipdb
-    ipdb.set_trace()
     num_heads = model.decoder.external_memory.num_heads
     head_dim = model.decoder.external_memory.head_dim
     chunk_size = model.decoder.external_memory.chunk_size
@@ -99,6 +98,7 @@ def compute_knn_clusters(model, num_clusters):
     concatenated_keys_array = [np.concatenate(list, axis=0) for list in keys_list]
     print(concatenated_keys_array[0].shape)
     concatenated_values_array = [np.concatenate(list, axis=0) for list in value_list]
+    
     centroids_list = []
     assignments_list = []
     for keys in concatenated_keys_array:
@@ -115,7 +115,7 @@ def compute_knn_clusters(model, num_clusters):
     }
 
 def main(args):
-    if "train_ckpt" in args.path:
+    if "longmem_gpt2_medium" in args.path:
         override_args = {"pretrained_model_path": args.pretrained_model_path, "gpt_encoder_path": args.gpt_encoder_path, "data": "gpt2_bpe", "chunk_size": 2}
     else:
         override_args = {"gpt2_vocab_bpe": os.path.join(args.gpt_encoder_path, "vocab.bpe"), "gpt2_encoder_json": os.path.join(args.gpt_encoder_path, "encoder.json"), "gpt_dict_path": os.path.join(args.gpt_encoder_path, "dict.txt")}
@@ -143,15 +143,16 @@ def main(args):
     model = model[0]
     model = model.eval()
     model = model.cuda()
-
+    
     for seed in [1,2,3,4,5,6]:
         random.seed(seed)
         original_demon_train_subset = random.sample(data['train'], args.k)
         original_demon_train_subset = [task_template.format(s[0], s[1]) for s in original_demon_train_subset]
         demonstration = "".join(original_demon_train_subset)
 
-        if "train_ckpt" in args.path:
+        if "longmem_gpt2_medium" in args.path:
             print("Load {} examples into memory".format(args.cache_k))
+            memory_set = None
             if args.data == "d1":
                 memory_set = np.load("/data/zyu401_data/anirudh/d1.npy")
             elif args.data == "d2":
@@ -175,48 +176,68 @@ def main(args):
             model.decoder.layers[int(model.decoder.retrieval_layer_index / model.decoder.layer_reduction_factor)].initalize(config)
             print(model.decoder.external_memory.index_list[0].ntotal)
         
-        total_cnt = 0
-        acc_cnt = 0
         
-        for item in tqdm(data[args.subset]):
-            total_cnt += 1
-            
-            test_subset = original_demon_train_subset + [task_template[:-5].format(item[0])]
-            tokenized_lines = [tokenizer.encode(line) for line in test_subset]
-            tokenized_ids = [[dictionary.bos()] + dictionary.encode_line(line, add_if_not_exist=False).tolist() for line in tokenized_lines]
-            tokens = list(itertools.chain(*tokenized_ids))
 
-            tokens = torch.LongTensor([tokens[:-1]]).cuda()
+        tasks = ['SST-2', "sst-5", "mr", "mpqa", "subj"]
+        subsets = ["validation", "validation", "test", "test", "test"]
 
-            if "train_ckpt" in args.path:
-                prediction = model(tokens, features_only=False, disable_add_index=False)
-            else:
-                prediction = model(tokens, features_only=False)
-            
-            prediction = prediction[0][0, -1, :].softmax(dim=-1)
-            
-            prediction = tokenizer.decode(dictionary.string([prediction.argmax(-1).item()]))
-            acc_cnt += (item[1].startswith(prediction.strip()) and prediction.strip() != "")
+        for i in range(0,5):
+            task = tasks[i]
+            subset = subsets[i]
+
+            total_cnt = 0
+            acc_cnt = 0
+
+            data = load_data(task)
+            original_demon_train_subset = random.sample(data['train'], args.k)
+            original_demon_train_subset = [task_template.format(s[0], s[1]) for s in original_demon_train_subset]
         
-        model_list_acc.append(acc_cnt / total_cnt)
-        print("here")
-        print(acc_cnt / total_cnt)
-        try:
-            model.decoder.previous_qkv_list.clear()
-            layer = model.decoder.layers[int(model.decoder.retrieval_layer_index / model.decoder.layer_reduction_factor)]
-            for index in layer.index_list:
-                index.reset()
-            for x in layer.cluster_index:
-                for index in x:
-                    index.reset()
+            for item in tqdm(data[subset]):
+                total_cnt += 1
+                test_subset =  [task_template[:-5].format(item[0])]
+                tokenized_lines = [tokenizer.encode(line) for line in test_subset]
+                tokenized_ids = [dictionary.encode_line(line, add_if_not_exist=False).tolist() for line in tokenized_lines]
+                tokens = list(itertools.chain(*tokenized_ids))
 
-            print("CLEAR DONE")
-            
-            if model.decoder.external_memory:
-                model.decoder.external_memory.reset()
-        except AttributeError:
-            print("CLEAR FAILED")
-            pass
+                tokens = torch.LongTensor([tokens[:-1]]).cuda()
+
+                if "longmem_gpt2_medium" in args.path:
+                    prediction = model(tokens, features_only=False, disable_add_index=False)
+                else:
+                    prediction = model(tokens, features_only=False)
+                
+                prediction = prediction[0][0, -1, :].softmax(dim=-1)
+                
+                prediction = tokenizer.decode(dictionary.string([prediction.argmax(-1).item()]))
+                acc_cnt += (item[1].startswith(prediction.strip()) and prediction.strip() != "")
+
+                if total_cnt == 1:
+                    break
+        
+            model_list_acc.append(acc_cnt / total_cnt)
+            print("here")
+            print(acc_cnt / total_cnt)
+            try:
+                # model.decoder.previous_qkv_list.clear()
+                layer = model.decoder.layers[int(model.decoder.retrieval_layer_index / model.decoder.layer_reduction_factor)]
+                file_str = f"/data/zyu401_data/anirudh/cluster/{task}_{seed}_{seed}combine.npy"
+                print("FILE SAVED", file_str)
+                np.save(file_str, layer.cluster_allocation)
+                layer.cluster_allocation = np.empty(16,dtype=object)
+                layer.clear_cluster_allocation(args.cluster)
+                # for index in layer.index_list:
+                #     index.reset()
+                # for x in layer.cluster_index:
+                #     for index in x:
+                #         index.reset()
+
+                print("CLEAR DONE")
+                
+                if model.decoder.external_memory:
+                    model.decoder.external_memory.reset()
+            except AttributeError:
+                print("CLEAR FAILED")
+                pass
 
         print("Acc for random seed {}: {}".format(seed, acc_cnt / total_cnt))
     model_list_acc = [np.mean(model_list_acc), np.std(model_list_acc)] 
