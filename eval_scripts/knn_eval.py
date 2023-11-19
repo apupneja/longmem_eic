@@ -71,7 +71,7 @@ def load_data(task):
     
     return data
 
-def compute_knn_clusters(model, num_clusters, chunk_size):
+def compute_knn_clusters(model, num_clusters, chunk_size, seed):
     num_heads = model.decoder.external_memory.num_heads
     head_dim = model.decoder.external_memory.head_dim
     chunk_size = chunk_size
@@ -108,7 +108,7 @@ def compute_knn_clusters(model, num_clusters, chunk_size):
     centroids_list = []
     assignments_list = []
     for keys in concatenated_keys_array:
-        centroids, assignments = kmeans_cuda(keys, num_clusters, seed=3)
+        centroids, assignments = kmeans_cuda(keys, num_clusters, seed=seed)
         centroids_list.append(centroids)
         assignments_list.append(assignments)
 
@@ -180,7 +180,7 @@ def main(args):
             article_list = [article_tokens[i*context_length:(i+1)*context_length] for i in range(ceil(len(article_tokens)//context_length))]
             for t in article_list:
                 model(torch.LongTensor([t]).cuda())
-            config = compute_knn_clusters(model, args.cluster, args.chunk)
+            config = compute_knn_clusters(model, args.cluster, args.chunk, seed)
             model.decoder.set_knn_config(config)
             model.decoder.layers[int(model.decoder.retrieval_layer_index / model.decoder.layer_reduction_factor)].initalize(config)
             print(model.decoder.external_memory.index_list[0].ntotal)

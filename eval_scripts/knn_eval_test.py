@@ -72,12 +72,15 @@ def load_data(task):
     
     return data
 
-def compute_knn_clusters(model, num_clusters):
+def compute_knn_clusters(model, num_clusters, chunk_size):
     num_heads = model.decoder.external_memory.num_heads
     head_dim = model.decoder.external_memory.head_dim
-    chunk_size = model.decoder.external_memory.chunk_size
+    chunk_size = chunk_size
     keys_list = [[] for i in range(num_heads)]
     value_list = [[] for i in range(num_heads)]
+    
+    keys_list_chunk = [[] for i in range(num_heads)]
+    value_list_chunk = [[] for i in range(num_heads)]
 
     print(len(model.decoder.previous_qkv_list))
 
@@ -94,11 +97,15 @@ def compute_knn_clusters(model, num_clusters):
         for i in range(num_heads):
             keys_list[i].append(keys_with_chunk[:, :, i, :].mean(dim=-2).cpu().numpy())
             value_list[i].append(vals_with_chunk[:, :, i, :].mean(dim=-2).cpu().numpy())
+            keys_list_chunk[i].append(keys_with_chunk[:, :, i, :])
+            value_list_chunk[i].append(vals_with_chunk[:, :, i, :])
 
     concatenated_keys_array = [np.concatenate(list, axis=0) for list in keys_list]
+    concatenated_keys_array_chunk = [np.concatenate(list, axis=0) for list in keys_list_chunk]
     print(concatenated_keys_array[0].shape)
     concatenated_values_array = [np.concatenate(list, axis=0) for list in value_list]
-    
+    print(concatenated_keys_array_chunk[0].shape)
+    concatenated_values_array_chunk = [np.concatenate(list, axis=0) for list in value_list_chunk]
     centroids_list = []
     assignments_list = []
     for keys in concatenated_keys_array:
@@ -112,6 +119,9 @@ def compute_knn_clusters(model, num_clusters):
         "keys_list": concatenated_keys_array,
         "values_list": concatenated_values_array,
         "clusters": num_clusters,
+        "keys_list_chunk": concatenated_keys_array_chunk,
+        "values_list_chunk": concatenated_values_array_chunk,
+        "chunk_size": chunk_size,
     }
 
 def main(args):
@@ -171,7 +181,7 @@ def main(args):
             article_list = [article_tokens[i*context_length:(i+1)*context_length] for i in range(ceil(len(article_tokens)//context_length))]
             for t in article_list:
                 model(torch.LongTensor([t]).cuda())
-            config = compute_knn_clusters(model, args.cluster)
+            config = compute_knn_clusters(model, args.cluster, args.chunk)
             model.decoder.set_knn_config(config)
             model.decoder.layers[int(model.decoder.retrieval_layer_index / model.decoder.layer_reduction_factor)].initalize(config)
             print(model.decoder.external_memory.index_list[0].ntotal)
@@ -211,7 +221,7 @@ def main(args):
                 prediction = tokenizer.decode(dictionary.string([prediction.argmax(-1).item()]))
                 acc_cnt += (item[1].startswith(prediction.strip()) and prediction.strip() != "")
 
-                if total_cnt == 1:
+                if total_cnt == 50:
                     break
         
             model_list_acc.append(acc_cnt / total_cnt)
