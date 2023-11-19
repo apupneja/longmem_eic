@@ -213,6 +213,7 @@ def main(args):
         print(acc_cnt / total_cnt)
         try:
             model.decoder.previous_qkv_list.clear()
+            model.decoder.clear_knn_config()
             layer = model.decoder.layers[int(model.decoder.retrieval_layer_index / model.decoder.layer_reduction_factor)]
             # file_str = f"/data/zyu401_data/anirudh/cluster/{args.task}_{seed}_{args.data}.npy"
             # np.save(file_str, layer.cluster_allocation)

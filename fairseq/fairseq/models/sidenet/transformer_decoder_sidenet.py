@@ -281,6 +281,9 @@ class TransformerDecoderSideNetBase(FairseqIncrementalDecoder):
     def set_knn_config(self, knn_config):
         self.knn_utils = knn_config  
 
+    def clear_knn_config(self):
+        self.knn_utils = None
+
     def build_decoder_layer(self, cfg, no_encoder_attn=False, memory=False):
         # build the layers for side network
         layer = sidenet_layer_palm_sidenet_retrieval.TransformerDecoderSideNetLayer(cfg, no_encoder_attn, memory=memory)
@@ -469,6 +472,7 @@ class TransformerDecoderSideNetBase(FairseqIncrementalDecoder):
                 # B, Nt, num_k, E = long_context_retrieval[idx].shape
                 # long_context = long_context_retrieval[idx].to(x.device)
                 # long_context = long_context_retrieval.to(x.device)
+                print("here")
                 x, layer_attn, knn_index = layer(
                     x,
                     enc,
