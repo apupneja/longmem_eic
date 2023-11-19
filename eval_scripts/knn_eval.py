@@ -124,7 +124,7 @@ def compute_knn_clusters(model, num_clusters, chunk_size, seed):
     }
 
 def main(args):
-    if "longmem_gpt2_medium" in args.path:
+    if "train_ckpt" in args.path:
         override_args = {"pretrained_model_path": args.pretrained_model_path, "gpt_encoder_path": args.gpt_encoder_path, "data": "gpt2_bpe", "chunk_size": 2}
     else:
         override_args = {"gpt2_vocab_bpe": os.path.join(args.gpt_encoder_path, "vocab.bpe"), "gpt2_encoder_json": os.path.join(args.gpt_encoder_path, "encoder.json"), "gpt_dict_path": os.path.join(args.gpt_encoder_path, "dict.txt")}
@@ -159,7 +159,7 @@ def main(args):
         original_demon_train_subset = [task_template.format(s[0], s[1]) for s in original_demon_train_subset]
         demonstration = "".join(original_demon_train_subset)
 
-        if "longmem_gpt2_medium" in args.path:
+        if "train_ckpt" in args.path:
             print("Load {} examples into memory".format(args.cache_k))
             memory_set = None
             if args.data == "d1":
@@ -198,7 +198,7 @@ def main(args):
 
             tokens = torch.LongTensor([tokens[:-1]]).cuda()
 
-            if "longmem_gpt2_medium" in args.path:
+            if "train_ckpt" in args.path:
                 prediction = model(tokens, features_only=False, disable_add_index=False)
             else:
                 prediction = model(tokens, features_only=False)

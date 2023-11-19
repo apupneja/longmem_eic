@@ -472,7 +472,6 @@ class TransformerDecoderSideNetBase(FairseqIncrementalDecoder):
                 # B, Nt, num_k, E = long_context_retrieval[idx].shape
                 # long_context = long_context_retrieval[idx].to(x.device)
                 # long_context = long_context_retrieval.to(x.device)
-                print("here")
                 x, layer_attn, knn_index = layer(
                     x,
                     enc,
