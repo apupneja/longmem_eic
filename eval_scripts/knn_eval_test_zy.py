@@ -13,6 +13,7 @@ from tqdm import tqdm
 import numpy as np
 import itertools
 from math import *
+import collections
 
 
 DEFAULT_ENCODER_JSON = "https://dl.fbaipublicfiles.com/fairseq/gpt2_bpe/encoder.json"
@@ -71,7 +72,7 @@ def load_data(task):
     
     return data
 
-def compute_knn_clusters(model, num_clusters, chunk_size, seed):
+def compute_knn_clusters(model, num_clusters, chunk_size):
     num_heads = model.decoder.external_memory.num_heads
     head_dim = model.decoder.external_memory.head_dim
     chunk_size = chunk_size
@@ -108,7 +109,7 @@ def compute_knn_clusters(model, num_clusters, chunk_size, seed):
     centroids_list = []
     assignments_list = []
     for keys in concatenated_keys_array:
-        centroids, assignments = kmeans_cuda(keys, num_clusters, seed=seed)
+        centroids, assignments = kmeans_cuda(keys, num_clusters, seed=3)
         centroids_list.append(centroids)
         assignments_list.append(assignments)
 
@@ -124,7 +125,7 @@ def compute_knn_clusters(model, num_clusters, chunk_size, seed):
     }
 
 def main(args):
-    if "longmem_data" in args.path:
+    if "longmem_gpt2_medium" in args.path:
         override_args = {"pretrained_model_path": args.pretrained_model_path, "gpt_encoder_path": args.gpt_encoder_path, "data": "gpt2_bpe", "chunk_size": 2}
     else:
         override_args = {"gpt2_vocab_bpe": os.path.join(args.gpt_encoder_path, "vocab.bpe"), "gpt2_encoder_json": os.path.join(args.gpt_encoder_path, "encoder.json"), "gpt_dict_path": os.path.join(args.gpt_encoder_path, "dict.txt")}
@@ -153,13 +154,13 @@ def main(args):
     model = model.eval()
     model = model.cuda()
     
-    for seed in [1,2,3,4,5,6]:
+    for seed in [1]:
         random.seed(seed)
         original_demon_train_subset = random.sample(data['train'], args.k)
         original_demon_train_subset = [task_template.format(s[0], s[1]) for s in original_demon_train_subset]
         demonstration = "".join(original_demon_train_subset)
 
-        if "longmem_data" in args.path:
+        if "longmem_gpt2_medium" in args.path:
             print("Load {} examples into memory".format(args.cache_k))
             memory_set = None
             if args.data == "d1":
@@ -180,59 +181,73 @@ def main(args):
             article_list = [article_tokens[i*context_length:(i+1)*context_length] for i in range(ceil(len(article_tokens)//context_length))]
             for t in article_list:
                 model(torch.LongTensor([t]).cuda())
-            config = compute_knn_clusters(model, args.cluster, args.chunk, seed)
+            config = compute_knn_clusters(model, args.cluster, args.chunk)
             model.decoder.set_knn_config(config)
             model.decoder.layers[int(model.decoder.retrieval_layer_index / model.decoder.layer_reduction_factor)].initalize(config)
             print(model.decoder.external_memory.index_list[0].ntotal)
         
-        total_cnt = 0
-        acc_cnt = 0
         
-        for item in tqdm(data[args.subset]):
-            total_cnt += 1
-            
-            test_subset = original_demon_train_subset + [task_template[:-5].format(item[0])]
-            tokenized_lines = [tokenizer.encode(line) for line in test_subset]
-            tokenized_ids = [[dictionary.bos()] + dictionary.encode_line(line, add_if_not_exist=False).tolist() for line in tokenized_lines]
-            tokens = list(itertools.chain(*tokenized_ids))
 
-            tokens = torch.LongTensor([tokens[:-1]]).cuda()
+        tasks = ['SST-2', "sst-5", "mr", "mpqa", "subj"]
+        subsets = ["validation", "validation", "test", "test", "test"]
 
-            if "longmem_data" in args.path:
-                prediction = model(tokens, features_only=False, disable_add_index=False)
-            else:
-                prediction = model(tokens, features_only=False)
-            
-            prediction = prediction[0][0, -1, :].softmax(dim=-1)
-            
-            prediction = tokenizer.decode(dictionary.string([prediction.argmax(-1).item()]))
-            acc_cnt += (item[1].startswith(prediction.strip()) and prediction.strip() != "")
+        for i in range(0,5):
+            task = tasks[i]
+            subset = subsets[i]
+
+            total_cnt = 0
+            acc_cnt = 0
+
+            data = load_data(task)
+            original_demon_train_subset = random.sample(data['train'], args.k)
+            original_demon_train_subset = [task_template.format(s[0], s[1]) for s in original_demon_train_subset]
         
-        model_list_acc.append(acc_cnt / total_cnt)
-        print("here")
-        print(acc_cnt / total_cnt)
-        try:
-            model.decoder.previous_qkv_list.clear()
-            model.decoder.clear_knn_config()
-            layer = model.decoder.layers[int(model.decoder.retrieval_layer_index / model.decoder.layer_reduction_factor)]
-            # file_str = f"/data/zyu401_data/anirudh/cluster/{args.task}_{seed}_{args.data}.npy"
-            # np.save(file_str, layer.cluster_allocation)
-            layer.cluster_allocation = np.empty(16,dtype=object)
-            layer.clear_cluster_allocation(args.cluster)
+            for item in tqdm(data[subset]):
+                total_cnt += 1
+                test_subset =  [task_template[:-5].format(item[0])]
+                tokenized_lines = [tokenizer.encode(line) for line in test_subset]
+                tokenized_ids = [dictionary.encode_line(line, add_if_not_exist=False).tolist() for line in tokenized_lines]
+                tokens = list(itertools.chain(*tokenized_ids))
 
-            for index in layer.index_list:
-                index.reset()
-            for x in layer.cluster_index:
-                for index in x:
-                    index.reset()
+                tokens = torch.LongTensor([tokens[:-1]]).cuda()
 
-            print("CLEAR DONE")
-            
-            if model.decoder.external_memory:
-                model.decoder.external_memory.reset()
-        except AttributeError:
-            print("CLEAR FAILED")
-            pass
+                if "longmem_gpt2_medium" in args.path:
+                    prediction = model(tokens, features_only=False, disable_add_index=False)
+                else:
+                    prediction = model(tokens, features_only=False)
+                
+                prediction = prediction[0][0, -1, :].softmax(dim=-1)
+                
+                prediction = tokenizer.decode(dictionary.string([prediction.argmax(-1).item()]))
+                acc_cnt += (item[1].startswith(prediction.strip()) and prediction.strip() != "")
+
+                if total_cnt == 50:
+                    break
+        
+            model_list_acc.append(acc_cnt / total_cnt)
+            print("here")
+            print(acc_cnt / total_cnt)
+            try:
+                # model.decoder.previous_qkv_list.clear()
+                layer = model.decoder.layers[int(model.decoder.retrieval_layer_index / model.decoder.layer_reduction_factor)]
+                file_str = f"/data/zyu401_data/zyu401/LongMem_vis/{task}_{seed}_{seed}combine.npy"
+                print("FILE SAVED", file_str)
+                np.save(file_str, layer.cluster_allocation)
+                layer.cluster_allocation = np.empty(16,dtype=object)
+                layer.clear_cluster_allocation(args.cluster)
+                # for index in layer.index_list:
+                #     index.reset()
+                # for x in layer.cluster_index:
+                #     for index in x:
+                #         index.reset()
+
+                print("CLEAR DONE")
+                
+                if model.decoder.external_memory:
+                    model.decoder.external_memory.reset()
+            except AttributeError:
+                print("CLEAR FAILED")
+                pass
 
         print("Acc for random seed {}: {}".format(seed, acc_cnt / total_cnt))
     model_list_acc = [np.mean(model_list_acc), np.std(model_list_acc)] 
@@ -249,8 +264,7 @@ if __name__=="__main__":
     parser.add_argument("--cache-k", type=int, default=2000, help="number of cached examples in LongMem's memory")
     parser.add_argument("--subset", type=str, default="test", help="normally test set. But for SST-2, there is no testset, we use validation set instead")
     parser.add_argument("--cluster", type=int, default="50", help="number of clusters")
-    parser.add_argument("--data", type = str, default = "d1")    
-    parser.add_argument("--chunk", type = int, default = "2")
-
+    parser.add_argument("--chunk", type=int, default="4", help="chunk size")
+    parser.add_argument("--data", type = str, default = "d1")
     args = parser.parse_args()
     main(args)
