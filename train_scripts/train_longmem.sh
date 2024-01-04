@@ -1,9 +1,9 @@
 task=pile
-DATA_DIR=/data/zyu401_data/anirudh/longmem_data/data-bin/longmem
-CKPT_DIR=/data/zyu401_data/anirudh/longmem_data/train_ckpt/5early/again
+DATA_DIR=/data/zyu401_data/anirudh/longmem_data_1:/data/zyu401_data/anirudh/longmem_data_2:/data/zyu401_data/anirudh/longmem_data_3:/data/zyu401_data/anirudh/longmem_data_4
+CKPT_DIR=/data/zyu401_data/anirudh/longmem_data/train_ckpt/re
 PTM_PATH=/data/zyu401_data/anirudh/longmem_data/LongMem_public_checkpoints/gpt2_medium/checkpoint_last.pt
 
-CUDA_VISIBLE_DEVICES=0,1,2,3 TORCH_DISTRIBUTED_DEBUG=DETAIL fairseq-train ${DATA_DIR}  \
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 TORCH_DISTRIBUTED_DEBUG=DETAIL fairseq-train ${DATA_DIR}  \
     --save-dir ${CKPT_DIR} \
     --task language_modeling --arch transformer_lm_sidenet_gpt2_small \
     --share-decoder-input-output-embed \
@@ -12,7 +12,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 TORCH_DISTRIBUTED_DEBUG=DETAIL fairseq-train ${DATA
     --weight-decay 0.01 \
     --save-interval-updates 10000 --sample-break-mode none \
     --tokens-per-sample 1024 \
-    --batch-size 1 --total-num-update 100000 --seed 42 --update-freq 8 \
+    --batch-size 1 --total-num-update 100000 --seed 42 --update-freq 32 \
     --pretrained-model-path ${PTM_PATH} \
     --layer-reduction-factor 2 \
     --use-external-memory --memory-size 65536 \
@@ -24,7 +24,5 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 TORCH_DISTRIBUTED_DEBUG=DETAIL fairseq-train ${DATA
     --retrieval-layer-index 17 \
     --reload-ptm-layer \
     --disable-validation \
-    --precompute-mem-layer 5 \
-    --distributed-world-size 4 \
-
-# The --pre-trained-model path refers to the path to reproduced GPT-2-Medium checkpoints. You can find the downloading Google Drive url in README.
+    --precompute-mem-layer 4 \
+    --distributed-world-size 8

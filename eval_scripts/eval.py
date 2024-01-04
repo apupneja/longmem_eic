@@ -109,14 +109,14 @@ def main(args):
 
         if "train_ckpt" in args.path:
             print("Load {} examples into memory".format(args.cache_k))
-            # memory_set = [task_template.format(s[0], s[1]) for idx, s in enumerate(random.sample(data['train'], args.cache_k))]
-            memory_set = None
-            if args.data == "d1":
-                memory_set = np.load("/data/zyu401_data/anirudh/d1.npy")
-            elif args.data == "d2":
-                memory_set = np.load("/data/zyu401_data/anirudh/d2.npy")
-            elif args.data == "d3":
-                memory_set = np.load("/data/zyu401_data/anirudh/d3.npy")
+            memory_set = [task_template.format(s[0], s[1]) for idx, s in enumerate(random.sample(data['train'], args.cache_k))]
+            # memory_set = None
+            # if args.data == "d1":
+            #     memory_set = np.load("/data/zyu401_data/anirudh/d1.npy")
+            # elif args.data == "d2":
+            #     memory_set = np.load("/data/zyu401_data/anirudh/d2.npy")
+            # elif args.data == "d3":
+            #     memory_set = np.load("/data/zyu401_data/anirudh/d3.npy")
 
             tokenized_lines = [tokenizer.encode(line) for line in memory_set]
             tokenized_ids = [[dictionary.bos()] + dictionary.encode_line(line, add_if_not_exist=False).tolist() for line in tokenized_lines]
