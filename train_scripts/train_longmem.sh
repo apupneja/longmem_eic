@@ -12,7 +12,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 TORCH_DISTRIBUTED_DEBUG=DETAIL fairseq-trai
     --weight-decay 0.01 \
     --save-interval-updates 10000 --sample-break-mode none \
     --tokens-per-sample 1024 \
-    --batch-size 1 --total-num-update 100000 --seed 42 --update-freq 32 \
+    --batch-size 1 --total-num-update 100000 --seed 42 --update-freq 16 \
     --pretrained-model-path ${PTM_PATH} \
     --layer-reduction-factor 2 \
     --use-external-memory --memory-size 65536 \
